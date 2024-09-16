@@ -1,0 +1,21 @@
+{
+  "name": "taxi_oleg",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "taxi telegram bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./app.js"
+  },
+  "keywords": [
+    "taxi"
+  ],
+  "author": "itGin",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0",
+    "pg": "^8.12.0",
+    "sequelize": "^6.37.3"
+  }
+}
