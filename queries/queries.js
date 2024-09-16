@@ -12,7 +12,7 @@ const queries = async () => {
                     await bot.sendMessage(
                         chatId, 
                         'Ви вибрали маршрут Київ Софія.', 
-                        {reply_markup: keyboards.scheduleMenu }
+                        { reply_markup: keyboards.scheduleMenu },
                     );
                     break;
                 case 'odesa':

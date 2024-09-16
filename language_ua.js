@@ -15,6 +15,13 @@ const keyboards = {
             [{ text: 'Завтра', callback_data: 'tomorrow' }]
         ]
     },
+    sitsMenu: {
+        inline_keyboard: [
+            [{ text: '1', callback_data: 'sit1' }, { text: '2', callback_data: 'sit2' }, { text: '3', callback_data: 'sit3' }],
+            [{ text: '4', callback_data: 'sit4' }, { text: '5', callback_data: 'sit5' }, { text: '6', callback_data: 'sit6' }],
+            [{ text: '7', callback_data: 'sit7' }, { text: '8', callback_data: 'sit8' }]
+        ]
+    },    
     mainMenu: {
         keyboard: [
             [{ text: 'Купити квиток' }],
