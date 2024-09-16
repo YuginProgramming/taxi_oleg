@@ -26,13 +26,22 @@ const queries = async () => {
                 case 'today':
                     await bot.sendMessage(
                         chatId, 
-                        'Ви вибрали поїздку сьогодні.'
+                        'Ви вибрали поїздку сьогодні. Оберіть своє місце в салоні:',
+                        { reply_markup: keyboards.sitsMenu }
                     );
                     break;
                 case 'tomorrow':
                     await bot.sendMessage(
                         chatId, 
-                        'Ви вибрали поїздку на завтра.'
+                        'Ви вибрали поїздку на завтра. Оберіть своє місце в салоні:',
+                        { reply_markup: keyboards.sitsMenu }
+                    );
+                    break;
+                case 'payment':
+                    await bot.sendMessage(
+                        chatId, 
+                        'Оберіть спсіб оплати:',
+                        { reply_markup: keyboards.paymentMenu }
                     );
                     break;
 
