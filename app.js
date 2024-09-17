@@ -3,7 +3,7 @@ import { anketaListiner } from './anketa.js';
 import { dataBot } from './values.js';
 import { sequelize } from './models/sequelize.js';
 import { queries } from './queries/queries.js'
-//import { logger } from './logger/index.js';
+import buyTicket from './queries/buy-ticket.js';
 
 const bot = new TelegramBot(dataBot.telegramBotToken, { polling: true });
 
@@ -34,6 +34,7 @@ main();
 
 anketaListiner();
 queries();
+buyTicket();
 
 // cron.schedule('0 0 * * *', () => {
 //     getStatistic();

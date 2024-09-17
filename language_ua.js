@@ -1,7 +1,3 @@
-// language_ua.js:
-import { generateKeyboard } from './src/generateKeyboard.js';
-
-
 const keyboards = {
     routesMenu: {
         inline_keyboard: [
@@ -29,15 +25,23 @@ const keyboards = {
         ]
     },
     mainMenu: {
-        keyboard: [
-            [{ text: 'Купити квиток' }],
-            [{ text: 'Вибрати маршрут' }],
-            [{ text: 'Мій профіль' }],
-            [{ text: 'Служба підтримки' }]
-        ],
-        one_time_keyboard: true,
-        resize_keyboard: true
+        inline_keyboard: [
+            [{ text: `🎫 Купити квиток `, callback_data: 'buyTicket' }],
+            [{ text: `🗺️ Вибрати маршрут `, callback_data: 'selectRoute' }],
+            [{ text: `🧑‍💼 Мій профіль `, callback_data: 'myProfile' }],
+            [{ text: `📩 Служба підтримки `, callback_data: 'support' }, { text: `❗❓ Питання `, callback_data: 'support' }]
+        ]
     },
+
+    selectArea: {
+        inline_keyboard: [
+            [{ text: 'Міжнародна поїздка', callback_data: 'international' }],
+            [{ text: 'Поїздка по Україні', callback_data: 'domestics' }],
+            [{ text: 'По місту', callback_data: 'local' }],
+            [{ text: 'Вихід 🚪', callback_data: 'exit' }]            
+        ]
+    },
+
     contactRequest: {
         keyboard: [
             [{ text: 'Поділитися номером', request_contact: true }]
@@ -94,8 +98,34 @@ const keyboards = {
         ],
         one_time_keyboard: true,
         resize_keyboard: true
-    }
+    },
+    shareNumber: { keyboard: [
+        [{ 
+            text: 'Поділитися номером',
+            request_contact: true, 
+        }]
+      ], 
+        resize_keyboard: true,
+        one_time_keyboard: true 
+    },
 };
 
+const phrases = {
+    botInformation: `
+🚖 Вас вітає чат-бот Taxi Premium Service! 🚘
+
+Ми пропонуємо:
+
+Поїздки по Києву та Україні в комфортних 6-8 місних Mercedes (останні моделі)
+Міжміські та міжнародні маршрути
+Обслуговування цілодобово
+`,
+    askNumber: `Будь ласка, надішліть свій номер телефону за допомогою кнопки нижче  👇:`,
+    mainMenu: `Головне меню`,
+    select: `Будь ласка, зробіть вибір 👇:`,
+    departure: `Для оформлення квитка оберіть місто відправлення 👇:`,
+    route: `Оберіть маршрут поїздки 👇:`
+}
+
 // Export the keyboards object
-export { keyboards };
+export { keyboards, phrases };

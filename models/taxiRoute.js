@@ -13,6 +13,10 @@ TaxiRoute.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    area: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     departure_time: {
         type: DataTypes.DATE,
         allowNull: true
@@ -22,10 +26,10 @@ TaxiRoute.init({
         allowNull: true
     }
 }, {
-    freezeTableName: false,  // Allows Sequelize to pluralize table names (optional)
-    timestamps: true,        // Automatically adds `createdAt` and `updatedAt` fields
-    modelName: 'taxi_routes',  // The name of the model
-    sequelize                 // Pass the connection instance
+    freezeTableName: false, 
+    timestamps: false, 
+    modelName: 'taxi_routes',  
+    sequelize                 
 });
 
 const createDemoRoute = async () => {
@@ -33,7 +37,8 @@ const createDemoRoute = async () => {
         const demoRouteData = {
             departure_city: 'Одеса',
             target_city: 'Софія',
-            departure_time: new Date('2024-09-13T08:00:00'),  // Set specific date and time
+            area: 'international',
+            departure_time: new Date('2024-09-13T08:00:00'),  
             arrival_time: new Date('2024-09-13T21:00:00')
         };
 
@@ -47,10 +52,43 @@ const createDemoRoute = async () => {
         console.error('Error creating demo route:', err);
     }
 };
+const findDeparturesByArea = async (area) => {
+    const res = await TaxiRoute.findAll({ where: { area } });
 
-// Example of invoking the function
-//createDemoRoute();
+    
+    if (res.length > 0) {
+         
+        const departureCities = res.map(el => el.dataValues.departure_city);
+
+        
+        
+        const uniqueDepartureCities = Array.from(new Set(departureCities));
+       
+        return uniqueDepartureCities;
+    }
+    return [];
+};
+
+const findRoutesByDepature = async (city) => {
+    const res = await TaxiRoute.findAll({ where: { departure_city: city } });
+    if (res.length > 0) {
+        const cityPairs = res.map(el => ({
+            departure_city: el.dataValues.departure_city,
+            target_city: el.dataValues.target_city
+        }));
+        
+        const uniquePairs = Array.from(new Set(cityPairs.map(pair => JSON.stringify(pair)))).map(JSON.parse);
+        
+        return uniquePairs;
+    } 
+    return;
+};
+
+
 
 export {
-    TaxiRoute
+    TaxiRoute,
+    createDemoRoute,
+    findDeparturesByArea,
+    findRoutesByDepature
 };

@@ -1,5 +1,5 @@
 import { bot } from '../app.js';
-import { keyboards } from '../language_ua.js';
+import { keyboards, phrases } from '../language_ua.js';
 
 const queries = async () => {
     bot.on('callback_query', async (query) => {
@@ -8,12 +8,13 @@ const queries = async () => {
 
         try {
             switch (action) {
-                case 'kyiv':
+                case 'exit':
                     await bot.sendMessage(
-                        chatId, 
-                        'Ви вибрали маршрут Київ Софія.', 
-                        { reply_markup: keyboards.scheduleMenu },
-                    );
+                    chatId, 
+                    phrases.mainMenu,
+                    { reply_markup: keyboards.mainMenu }
+                );
+
                     break;
                 case 'odesa':
                     await bot.sendMessage(
@@ -45,12 +46,7 @@ const queries = async () => {
                     );
                     break;
 
-                default:
-                    await bot.sendMessage(
-                        chatId, 
-                        'Невідома дія.'
-                    );
-                    break;
+                
             }
         } catch (error) {
             console.error('Error callback query:', error);
