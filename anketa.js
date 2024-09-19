@@ -59,4 +59,14 @@ export const anketaListiner = async () => {
         }
 
     });
+
+    bot.on("photo", async (msg) => {
+        const chatId = msg.chat.id;
+
+        const photo = msg.photo[msg.photo.length - 1];
+        const fileId = photo.file_id;
+
+        bot.sendMessage(chatId, `Photo ID: ${fileId}`);
+
+    })
 };
