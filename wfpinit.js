@@ -6,9 +6,9 @@ WFP_CONFIG.DEFAULT_PAYMENT_CURRENCY = 'UAH';
 const wfp = new WFP({
     MERCHANT_ACCOUNT: 'itgin_online',
     MERCHANT_SECRET_KEY: dataBot.merchant_sercret,
-    MERCHANT_DOMAIN_NAME: '51.20.1.118:3001',
+    MERCHANT_DOMAIN_NAME: '49.13.142.186:3001',
     // service URL needed to receive webhooks
-    SERVICE_URL: 'http://51.20.1.118:3001/webhook',
+    SERVICE_URL: 'http://49.13.142.186:3001/webhook',
 });
 
 const sessionCreate = async (price, seat, ride_id, chatId) => {
