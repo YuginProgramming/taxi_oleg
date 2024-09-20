@@ -1,12 +1,9 @@
 import e from "express";
 import { dataBot } from "./values.js";
 import * as crypto from 'crypto';
-import { createNewPurchaseByChatId } from "./models/purchases.js";
 import bodyParser from "body-parser";
 import bot from "./bot.js";
-import { findContentByCourse } from "./models/content.js";
 import { findUserByPhone } from "./models/user.js";
-import { keyboards } from "./language_ua.js";
 import { findRideById } from "./models/rides.js";
 import { updateSeatById } from "./models/seats.js";
 import { createNewOrder } from "./models/orders.js";
