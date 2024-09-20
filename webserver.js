@@ -25,16 +25,12 @@ const server = () => {
     app.post('/webhook', async (req, res) => {
         try {
             const text = req.body;
-            console.log("Received raw body:", text);
             
             // Отримання першого ключа об'єкту
             const firstKey = Object.keys(text)[0];
-            console.log("First key:", firstKey);
             
             // Якщо ключ виглядає як JSON-рядок, розбираємо його
             const data = JSON.parse(firstKey);
-            console.log("Parsed data:", data);
-            console.log(data.merchantAccount, data.merchantSignature, data.amount, data.transactionStatus);
 
             const forHash = [
                 data.merchantAccount,
@@ -52,7 +48,6 @@ const server = () => {
                 .update(forHash)
                 .digest('hex');
 
-            console.log(expectedMerchantSignature);
 
             if (expectedMerchantSignature !== data.merchantSignature) {
                 return res.status(400).json('Corrupted webhook received. Webhook signature is not authentic.');
@@ -64,7 +59,7 @@ const server = () => {
             const chat_id = metadata[2];
 
             if (data.transactionStatus === 'Approved') {
-                if (!chat_id || !courseName) {
+                if (!chat_id || !seat || !ride_id) {
                     return res.status(400).json('Webhook Error: Missing metadata');
                 }
                 // Create purchase
