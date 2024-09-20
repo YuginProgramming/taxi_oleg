@@ -14,7 +14,7 @@ const wfp = new WFP({
 const sessionCreate = async (price, seat, ride_id, chatId) => {
     const session = await wfp.createInvoiceUrl({
         orderReference: (Math.random() * 1e17).toString(),
-        productName: [seat + '+' + ride_id + '+' + chatId],
+        productName: [seat + ',' + ride_id + ',' + chatId],
         productCount: [1],
         productPrice: [price],
     });

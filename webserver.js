@@ -55,7 +55,7 @@ const server = () => {
 
             console.log(data?.products[0].name)
             
-            const metadata = data?.products[0].name.split('+');
+            const metadata = data?.products[0].name.split(',');
             const ride_id = metadata[1];
             const seat = metadata[0];
             const chat_id = metadata[2];
