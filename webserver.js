@@ -3,7 +3,7 @@ import { dataBot } from "./values.js";
 import * as crypto from 'crypto';
 import bodyParser from "body-parser";
 import { bot }from "./app.js";
-import { findUserByPhone } from "./models/user.js";
+import { findUserByChatId, findUserByPhone } from "./models/user.js";
 import { findRideById } from "./models/rides.js";
 import { updateSeatById } from "./models/seats.js";
 import { createNewOrder } from "./models/orders.js";
@@ -59,13 +59,9 @@ const server = () => {
             const chat_id = metadata[2];
 
             if (data.transactionStatus === 'Approved') {
-                if (!chat_id || !seat || !ride_id) {
-                    return res.status(400).json('Webhook Error: Missing metadata');
-                }
-                // Create purchase
                 console.log(chat_id, seat, ride_id);
                
-                const user = await findUserByPhone(phone);
+                const user = await findUserByChatId(chat_id);
 
                 const ride = await findRideById(ride_id);
                 const updateSeat = await updateSeatById(ride.seats_id, seat, chat_id);

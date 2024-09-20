@@ -8,6 +8,7 @@ import { Locations } from '../models/locations.js';
 import { Cars } from '../models/cars.js';
 import { Seats } from '../models/seats.js';
 import { Cities } from '../models/taxi-cities.js';
+import { Orders } from '../models/orders.js';
 
 const DEBUG = true;
 
@@ -21,7 +22,8 @@ const main = async () => {
                 Routes.sync(),
                 Seats.sync(),
                 Cars.sync(),
-                Cities.sync()
+                Cities.sync(),
+                Orders.sync()
 
             ]);
 
