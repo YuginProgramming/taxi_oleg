@@ -2,7 +2,7 @@ import e from "express";
 import { dataBot } from "./values.js";
 import * as crypto from 'crypto';
 import bodyParser from "body-parser";
-import { bot }from "./bot.js";
+import { bot }from "./app.js";
 import { findUserByPhone } from "./models/user.js";
 import { findRideById } from "./models/rides.js";
 import { updateSeatById } from "./models/seats.js";
