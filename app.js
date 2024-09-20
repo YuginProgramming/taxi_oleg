@@ -13,7 +13,7 @@ export { bot };
 const main = async () => {
     const models = {
         list:  [
-            'users'
+            'cars'
         ]
     };
     // DB

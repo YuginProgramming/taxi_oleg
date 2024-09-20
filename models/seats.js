@@ -47,7 +47,7 @@ const updateSeatById = async (seats_id, seat, chat_id) => {
                     const seatRecord = await Seats.findOne({ where: { id: seats_id } });
                     if (seatRecord) {
                         logger.info(`User ${seatRecord.chat_id} get seat: ${seat + 1}`);
-                        return data;
+                        return seatRecord;
                     }
                     logger.info(`User ${chat_id} updated, but can't read result data`);
                 } else {
