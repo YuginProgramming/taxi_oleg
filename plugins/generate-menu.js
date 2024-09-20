@@ -171,7 +171,7 @@ const generateSeatsMenu = async (seatId, ride_id, backcallback) => {
             const seatNumber = index + 1;
             if (seat === 0) {
                 return  {
-                    text: `${seatNumber}`,
+                    text: `${seatNumber} 💺`,
                     callback_data: `seat+${seatNumber}+${ride_id}`,
                 } ;
             }
