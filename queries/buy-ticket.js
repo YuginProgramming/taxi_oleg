@@ -4,6 +4,7 @@ import { findCarById } from '../models/cars.js';
 import { findAllDomesticsLocations, findAllLocations } from '../models/locations.js';
 import { findFutureRidesByRouteID, findRideById } from '../models/rides.js';
 import { buildRouteDescriptions, findDomesticRoutesFromDeparture, findInternationalRoutesFromDeparture, findRouteById } from '../models/routes.js';
+import { findUserByChatId } from '../models/user.js';
 import { generateDomesticsLocationsMenu, generateLocationsMenu, generateRidesMenu, generateRoutesMenu, generateSeatsMenu } from '../plugins/generate-menu.js';
 import { sessionCreate } from '../wfpinit.js';
 
@@ -142,8 +143,7 @@ const buyTicket = async () => {
                             
                             const routesSeatDescriprion = await buildRouteDescriptions(routeSeat);
 
-                            console.log(routesSeatDescriprion)
-                            const paymentLink = await sessionCreate(seatRideData.price, seatRideData.id, chatId);
+                            const paymentLink = await sessionCreate(seatRideData.price, callback_info, callback_next, chatId);
                             await bot.sendMessage(
                                 chatId, 
                                 `

@@ -112,6 +112,12 @@ const findUserByChatId = async (chat_id) => {
     return res;
 };
 
+const findUserByPhone = async (phone) => {
+    const res = await User.findOne({ where: { phone } });
+    if (res) return res.dataValues;
+    return res;
+};
+
 export {
     User,
     createNewUser,
@@ -121,5 +127,6 @@ export {
     findUserById,
     findUsersByStatus,
     findUserByChatId,
-    createNewUserByChatId
+    createNewUserByChatId,
+    findUserByPhone
 };   

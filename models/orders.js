@@ -20,8 +20,19 @@ Orders.init({
     sequelize
 });
 
-
+const createNewOrder = async (user, ride_id) => {
+    let res;
+    try {
+        res = await Orders.create({ user, ride_id });
+        res = res.dataValues;
+        logger.info(`Created user with id: ${res.id}`);
+    } catch (err) {
+        logger.error(`Impossible to create user: ${err}`);
+    }
+    return res;
+};
 
 export {
     Orders,
+    createNewOrder
 };

@@ -11,10 +11,10 @@ const wfp = new WFP({
     SERVICE_URL: 'http://51.20.1.118:3001/webhook',
 });
 
-const sessionCreate = async (price, courseName, chatId) => {
+const sessionCreate = async (price, seat, ride_id, chatId) => {
     const session = await wfp.createInvoiceUrl({
         orderReference: (Math.random() * 1e17).toString(),
-        productName: [courseName + '+' + chatId],
+        productName: [seat + '+' + ride_id + '+' + chatId],
         productCount: [1],
         productPrice: [price],
     });

@@ -5,6 +5,12 @@ import { createNewPurchaseByChatId } from "./models/purchases.js";
 import bodyParser from "body-parser";
 import bot from "./bot.js";
 import { findContentByCourse } from "./models/content.js";
+import { findUserByPhone } from "./models/user.js";
+import { keyboards } from "./language_ua.js";
+import { findRideById } from "./models/rides.js";
+import { updateSeatById } from "./models/seats.js";
+import { createNewOrder } from "./models/orders.js";
+import { buildRouteDescriptions, findRouteById } from "./models/routes.js";
 
 const sortByLastElement = (array) => {
     return array.sort((a, b) => {
@@ -65,34 +71,42 @@ const server = () => {
             if (expectedMerchantSignature !== data.merchantSignature) {
                 return res.status(400).json('Corrupted webhook received. Webhook signature is not authentic.');
             }
-
-            const metadata = data?.products[0].name.split(',');
-            const chatId = metadata[1];
-            const courseName = metadata[0];
+            console.log(metadata)
+            const metadata = data?.products[0].name.split('+');
+            const ride_id = metadata[1];
+            const seat = metadata[0];
+            const chat_id = metadata[2];
 
             if (data.transactionStatus === 'Approved') {
-                if (!chatId || !courseName) {
+                if (!chat_id || !courseName) {
                     return res.status(400).json('Webhook Error: Missing metadata');
                 }
                 // Create purchase
-                console.log(chatId, courseName);
-                await createNewPurchaseByChatId(chatId, courseName);
+                console.log(chat_id, seat, ride_id);
+               
+                const user = await findUserByPhone(phone);
 
-                const content = await findContentByCourse(courseName);
-                console.log(content);
+                const ride = await findRideById(ride_id);
+                const updateSeat = await updateSeatById(ride.seats_id, seat, chat_id);
 
-                for (const el of content) {
-                    if (el.type === 'photo') {
-                        await bot.sendPhoto(chatId, el.media, { caption: el.text });
-                        continue;
-                    }
-                    await bot.sendDocument(chatId, el.media, { caption: el.text })
-                }
-                /*
-                const sortedArrays = sortByLastElement(content);
+                const createOrder = await createNewOrder(chat_id, ride_id);
+                
+                await bot.sendMessage(chat_id, 'Оплата пройшла успішно, квиток за номером телефону',
+                    { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
+                );
 
-                console.log(sortedArrays);
-                */
+                const routeData = await findRouteById(ride.route_id)
+                            
+                const routesDescriprion = await buildRouteDescriptions(routeData);
+
+                await bot.sendMessage(dataBot.ticketsChannel, `
+                    Покупка квитка
+🚐 ${routesDescriprion[0].description} 
+👉 Відправлення: ${ride.year+ '-' + ride.month + '-' + ride.date + '  ' + ride.time}
+📍 Місце: ${seat} 
+📞 ${user.phone}
+💸 Вартість: ${ride.price} грн
+                `)
 
             } else {
                 return res.status(200).json('Webhook Error: Unhandled event type');
