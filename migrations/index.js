@@ -9,6 +9,8 @@ import { Cars } from '../models/cars.js';
 import { Seats } from '../models/seats.js';
 import { Cities } from '../models/taxi-cities.js';
 import { Orders } from '../models/orders.js';
+import { Driver } from '../models/drivers.js';
+import { LocalOrders } from '../models/localOrders.js';
 
 const DEBUG = true;
 
@@ -23,7 +25,9 @@ const main = async () => {
                 Seats.sync(),
                 Cars.sync(),
                 Cities.sync(),
-                Orders.sync()
+                Orders.sync(),
+                Driver.sync(),
+                LocalOrders.sync()
 
             ]);
 

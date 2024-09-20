@@ -1,8 +1,10 @@
 import { bot } from '../app.js';
 import { keyboards, phrases } from '../language_ua.js';
-import { findAllCities } from '../models/taxi-cities.js';
-import { updateUserByChatId } from '../models/user.js';
+import { createNewLocalOrder } from '../models/localOrders.js';
+import { findAllCities, findCityById } from '../models/taxi-cities.js';
+import { findUserByChatId, updateUserByChatId } from '../models/user.js';
 import { generateLocaLLocationsMenu } from '../plugins/generate-menu.js';
+import { dataBot } from '../values.js';
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -24,7 +26,7 @@ const localTrip = async () => {
                 case 'local':
                     const cities = await findAllCities();
 
-                    const citiesMenu = await generateLocaLLocationsMenu(cities);
+                    const citiesMenu = await generateLocaLLocationsMenu(cities, 'local');
 
                     await bot.sendMessage(
                         chatId,
@@ -56,13 +58,16 @@ const localTrip = async () => {
                             await bot.sendMessage(
                                 chatId,
                                 phrases.sendGeo,
-                                { reply_markup:  [
-                                    [{
-                                      text: 'Надіслати геопозицію',
-                                      request_location: true
-                                    }]
-                                  ],
-                                  one_time_keyboard: true }    
+                                { reply_markup: { keyboard:
+                                    [
+                                        [{
+                                          text: 'Надіслати геопозицію',
+                                          request_location: true
+                                        }]
+                                      ],
+                                      resize_keyboard: true,
+                                      one_time_keyboard: true
+                                }   }    
                             );
 
                         break;
@@ -74,8 +79,31 @@ const localTrip = async () => {
     });
 
     bot.on("location", async (msg) => {
+
         const chatId = msg.chat.id;
         const location = msg.location;
+
+        console.log(location)
+
+        try {
+            const user = await findUserByChatId(chatId);
+
+            const order = await createNewLocalOrder(chatId, location.latitude + ' ' + location.longitude, user.favorite_city);
+
+            const city = await findCityById(user.favorite_city)
+
+            await bot.sendLocation(dataBot.driversChannel, location.latitude, location.longitude);
+            await bot.sendMessage(dataBot.driversChannel, `Замовлення №: ${order.id+ ' ' +city.emoji+ ' ' + city.city + ' 📞' + user.phone}`);
+
+            await bot.sendMessage(chatId, 
+                phrases.taxiOnTheWay,
+                { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
+            )
+        } catch (error) {
+            console.log(error)
+        }
+
+        
     })
 
 }

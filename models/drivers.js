@@ -2,32 +2,35 @@ import { Model, DataTypes } from "sequelize";
 import { sequelize } from './sequelize.js';
 import { logger } from '../logger/index.js';
 
-class Orders extends Model {}
 
-Orders.init({
-    user: {
+class Driver extends Model {}
+Driver.init({
+    chat_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
-    ride_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+    name: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
-    seat: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
+
 }, {
     freezeTableName: false,
-    timestamps: true, 
-    modelName: 'orders',
+    timestamps: true,
+    modelName: 'drivers',
     sequelize
 });
 
-const createNewOrder = async (user, ride_id, seat) => {
+
+const createNewDriverByChatId = async (chat_id) => {
     let res;
     try {
-        res = await Orders.create({ user, ride_id, seat });
+        res = await User.create({ chat_id });
         res = res.dataValues;
         logger.info(`Created user with id: ${res.id}`);
     } catch (err) {
@@ -36,7 +39,8 @@ const createNewOrder = async (user, ride_id, seat) => {
     return res;
 };
 
+
 export {
-    Orders,
-    createNewOrder
-};
+    Driver,
+    createNewDriverByChatId,
+};   

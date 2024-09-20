@@ -70,7 +70,7 @@ const server = () => {
                 const ride = await findRideById(ride_id);
                 const updateSeat = await updateSeatById(ride.seats_id, seat, chat_id);
 
-                const createOrder = await createNewOrder(chat_id, ride_id);
+                const createOrder = await createNewOrder(chat_id, ride_id, seat);
                 
                 await bot.sendMessage(chat_id, 'Оплата пройшла успішно, квиток за номером телефону',
                     { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }

@@ -26,9 +26,14 @@ const findAllCities = async () => {
     return;
 };
 
-
+const findCityById = async (id) => {
+    const res = await Cities.findOne({ where: { id } });
+    if (res) return res.dataValues;
+    return res;
+};
 
 export {
     Cities,
-    findAllCities
+    findAllCities,
+    findCityById
 };
