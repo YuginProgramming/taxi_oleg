@@ -52,6 +52,8 @@ const server = () => {
             if (expectedMerchantSignature !== data.merchantSignature) {
                 return res.status(400).json('Corrupted webhook received. Webhook signature is not authentic.');
             }
+
+            console.log(data?.products[0].name)
             
             const metadata = data?.products[0].name.split('+');
             const ride_id = metadata[1];
