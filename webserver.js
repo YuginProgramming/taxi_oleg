@@ -58,6 +58,8 @@ const server = () => {
             const seat = metadata[0];
             const chat_id = metadata[2];
 
+            console.log(metadata);
+
             if (data.transactionStatus === 'Approved') {
                 console.log(chat_id, seat, ride_id);
                
