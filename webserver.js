@@ -2,23 +2,12 @@ import e from "express";
 import { dataBot } from "./values.js";
 import * as crypto from 'crypto';
 import bodyParser from "body-parser";
-import bot from "./bot.js";
+import { bot }from "./bot.js";
 import { findUserByPhone } from "./models/user.js";
 import { findRideById } from "./models/rides.js";
 import { updateSeatById } from "./models/seats.js";
 import { createNewOrder } from "./models/orders.js";
 import { buildRouteDescriptions, findRouteById } from "./models/routes.js";
-
-const sortByLastElement = (array) => {
-    return array.sort((a, b) => {
-        // Отримуємо останні елементи підмасивів
-        const lastElementA = parseFloat(a[a.length - 1]);
-        const lastElementB = parseFloat(b[b.length - 1]);
-
-        // Порівнюємо ці елементи
-        return lastElementA - lastElementB;
-    });
-};
 
 
 const server = () => {
