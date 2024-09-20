@@ -2,8 +2,9 @@ import TelegramBot from 'node-telegram-bot-api';
 import { anketaListiner } from './anketa.js';
 import { dataBot } from './values.js';
 import { sequelize } from './models/sequelize.js';
-import { queries } from './queries/queries.js'
+import { localTrip } from './queries/local-trip.js'
 import buyTicket from './queries/buy-ticket.js';
+import server from './webserver.js';
 
 const bot = new TelegramBot(dataBot.telegramBotToken, { polling: true });
 
@@ -33,8 +34,9 @@ const main = async () => {
 main();
 
 anketaListiner();
-queries();
+localTrip();
 buyTicket();
+server();
 
 // cron.schedule('0 0 * * *', () => {
 //     getStatistic();

@@ -4,7 +4,6 @@ import { findCarById } from '../models/cars.js';
 import { findAllDomesticsLocations, findAllLocations } from '../models/locations.js';
 import { findFutureRidesByRouteID, findRideById } from '../models/rides.js';
 import { buildRouteDescriptions, findDomesticRoutesFromDeparture, findInternationalRoutesFromDeparture, findRouteById } from '../models/routes.js';
-import { findUserByChatId } from '../models/user.js';
 import { generateDomesticsLocationsMenu, generateLocationsMenu, generateRidesMenu, generateRoutesMenu, generateSeatsMenu } from '../plugins/generate-menu.js';
 import { sessionCreate } from '../wfpinit.js';
 
@@ -47,21 +46,7 @@ const buyTicket = async () => {
                         { reply_markup: { inline_keyboard: locationsMenu } }
                     );
                     break;
-                case 'local':
-                    await bot.sendMessage(
-                        chatId, 
-                        phrases.departure,
-                        { reply_markup: keyboards.sitsMenu }
-                    );
-                    break;
-
-                case 'payment':
-                    await bot.sendMessage(
-                        chatId, 
-                        'Оберіть спсіб оплати:',
-                        { reply_markup: keyboards.paymentMenu }
-                    );
-                    break;
+                
                 default:
                     const callback_data = action.split("+");
 

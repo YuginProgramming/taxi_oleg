@@ -203,10 +203,43 @@ const generateSeatsMenu = async (seatId, ride_id, backcallback) => {
 }
 
 
+const generateLocaLLocationsMenu = async (locations, backcallback) => {
+    if (!locations) {
+        const menu = [
+            [
+                { text: 'Назад 👈', callback_data: backcallback }, { text: 'Вихід 🚪', callback_data: 'exit' }
+            ],
+            
+        ]
+
+        return menu;
+
+    } else {
+
+        const menu = locations.map(el => [
+            { text: el.city + ' ' + el.emoji, callback_data: 'city+' + el.id }
+        ]);
+
+        const defaultButttons = 
+            [
+                { text: 'Назад 👈', callback_data: backcallback }, { text: 'Вихід 🚪', callback_data: 'exit' }
+            ]
+
+        menu.push(defaultButttons);           
+
+        console.log(menu);
+
+        return menu;
+    }           
+
+}
+
+
 export {
     generateLocationsMenu,
     generateRoutesMenu,
     generateRidesMenu,
     generateSeatsMenu,
-    generateDomesticsLocationsMenu
+    generateDomesticsLocationsMenu,
+    generateLocaLLocationsMenu
 }

@@ -10,31 +10,13 @@ User.init({
         allowNull: false,
         unique: true
     },
-    firstname: {
+    favorite_city: {
         type: DataTypes.STRING,
         allowNull: true
-    },
-    lastname: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    fathersname: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    isAuthenticated: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
     },
     phone: {
         type: DataTypes.STRING,
         allowNull: true
-    },
-    dialoguestatus: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: ''
     },
 
 }, {
