@@ -42,6 +42,8 @@ export const anketaListiner = async () => {
         const phone = msg.contact.phone_number;
         const chatId = msg.chat.id;
 
+        
+
         try {
 
             await updateUserByChatId(chatId, { phone });
@@ -61,6 +63,7 @@ export const anketaListiner = async () => {
     });
 
     bot.on("photo", async (msg) => {
+
         const chatId = msg.chat.id;
 
         const photo = msg.photo[msg.photo.length - 1];
