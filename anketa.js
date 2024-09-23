@@ -1,6 +1,6 @@
 import { bot } from "./app.js";
 import { keyboards, phrases } from './language_ua.js';
-import { createNewUserByChatId, updateUserByChatId } from './models/user.js';
+import { createNewUserByChatId, findUserByChatId, updateUserByChatId } from './models/user.js';
 import { logger } from "./logger/index.js";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -45,8 +45,9 @@ export const anketaListiner = async () => {
         
 
         try {
+            const user = await findUserByChatId(chatId);
 
-            await updateUserByChatId(chatId, { phone });
+            user && await updateUserByChatId(chatId, { phone });
 
             await bot.sendMessage(
                 chatId, 
