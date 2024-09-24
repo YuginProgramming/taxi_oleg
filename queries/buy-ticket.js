@@ -138,7 +138,7 @@ const buyTicket = async () => {
 
 💸 Вартість: ${seatRideData.price} грн
                                 `,
-                                { reply_markup: { inline_keyboard: [[{text: 'Оплатити', url: paymentLink}]] } }
+                                { reply_markup: { inline_keyboard: [[{text: 'Замовити', url: paymentLink}]] } }
                             );
                         break;
 
