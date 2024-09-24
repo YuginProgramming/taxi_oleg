@@ -103,7 +103,7 @@ const server = () => {
                     { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
                 );
 
-                await bot.sendDocument(chat_id, createReadStream(`./tickets/${pdfTicket}`))
+                await bot.sendDocument(chat_id, createReadStream(`./tickets/${pdfTicket}.pdf`))
 
             } else {
                 return res.status(200).json('Webhook Error: Unhandled event type');
