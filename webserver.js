@@ -89,7 +89,7 @@ const server = () => {
                 
                 const ticketData = {
                     route: routesDescriprion[0].description,
-                    departure: ride.year + '-' + ride.month + '-' + ride.date + '  ' + ride.time,
+                    departure:  ride.time + '  '+ ride.date + '-' + ride.month + '-'  + ride.year,
                     seat: seat,
                     phone: user.phone,
                     price: ride.price,
