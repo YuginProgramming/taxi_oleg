@@ -8,6 +8,8 @@ import { findRideById } from "./models/rides.js";
 import { updateSeatById } from "./models/seats.js";
 import { createNewOrder } from "./models/orders.js";
 import { buildRouteDescriptions, findRouteById } from "./models/routes.js";
+import generateTicketPDF from "./plugins/generate-ticket.js";
+import { createReadStream } from "fs";
 
 
 const server = () => {
@@ -72,22 +74,36 @@ const server = () => {
 
                 const createOrder = await createNewOrder(chat_id, ride_id, seat);
                 
-                await bot.sendMessage(chat_id, 'Оплата пройшла успішно, квиток за номером телефону',
-                    { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
-                );
-
                 const routeData = await findRouteById(ride.route_id)
                             
                 const routesDescriprion = await buildRouteDescriptions(routeData);
 
-                await bot.sendMessage(dataBot.ticketsChannel, `
+                const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
                     Покупка квитка
 🚐 ${routesDescriprion[0].description} 
 👉 Відправлення: ${ride.year+ '-' + ride.month + '-' + ride.date + '  ' + ride.time}
 📍 Місце: ${seat} 
 📞 ${user.phone}
 💸 Вартість: ${ride.price} грн
-                `)
+                `);
+                
+                const ticketData = {
+                    route: routesDescriprion[0].description,
+                    departure: ride.year + '-' + ride.month + '-' + ride.date + '  ' + ride.time,
+                    seat: seat,
+                    phone: user.phone,
+                    price: ride.price,
+                    qrLink: 'https://t.me/c/2353966055/' + ticketMessage.message_id,
+                    ticketId: createOrder.id
+                };
+
+                const pdfTicket = await generateTicketPDF(ticketData);
+
+                await bot.sendMessage(chat_id, 'Оплата пройшла успішно',
+                    { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
+                );
+
+                await bot.sendDocument(chat_id, createReadStream(`./tickets/${pdfTicket}`))
 
             } else {
                 return res.status(200).json('Webhook Error: Unhandled event type');
