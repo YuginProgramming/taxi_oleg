@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
+import fs from 'fs';
 
 // Функція для створення квитка
 const generateTicketPDF = async (data) => {
@@ -8,9 +9,15 @@ const generateTicketPDF = async (data) => {
   // Створення нового PDF документу
   const doc = new jsPDF();
 
+  const myFont = fs.readFileSync('./plugins/roboto.ttf').toString('base64');
+
+    doc.addFileToVFS("MyFont.ttf", myFont);
+    doc.addFont("MyFont.ttf", "MyFont", "normal");
+    doc.setFont("MyFont");
+
   // Титул
   doc.setFontSize(18);
-  doc.text("Покупка квитка", 20, 20);
+  doc.text("УКРВОЯЖ", 20, 20);
 
   // Дані квитка
   doc.setFontSize(12);
@@ -26,8 +33,14 @@ const generateTicketPDF = async (data) => {
   // Додавання QR-коду до PDF
   doc.addImage(qrCodeDataURL, "PNG", 20, 90, 50, 50);
 
-  // Завантаження PDF
-  doc.save(`../tickets/${ticketId}.pdf`);
+  const pdfOutput = doc.output("arraybuffer");
+
+  // Конвертація в Buffer
+  const buffer = Buffer.from(pdfOutput);
+
+  // Запис PDF на сервер
+  fs.writeFileSync(`./tickets/${ticketId}.pdf`, buffer);
+
   return ticketId;
 };
 

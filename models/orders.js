@@ -29,9 +29,9 @@ const createNewOrder = async (user, ride_id, seat) => {
     try {
         res = await Orders.create({ user, ride_id, seat });
         res = res.dataValues;
-        logger.info(`Created user with id: ${res.id}`);
+        logger.info(`Created order with id: ${res.id}`);
     } catch (err) {
-        logger.error(`Impossible to create user: ${err}`);
+        logger.error(`Impossible to create order: ${err}`);
     }
     return res;
 };
