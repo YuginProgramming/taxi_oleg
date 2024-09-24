@@ -70,7 +70,8 @@ const server = () => {
                 const user = await findUserByChatId(chat_id);
 
                 const ride = await findRideById(ride_id);
-                const updateSeat = await updateSeatById(ride.seats_id, seat, chat_id);
+                
+                const updateSeat = await updateSeatById(ride.seats_id, seat - 1, chat_id);
 
                 const createOrder = await createNewOrder(chat_id, ride_id, seat);
                 
