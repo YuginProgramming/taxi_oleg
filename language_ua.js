@@ -38,7 +38,7 @@ const keyboards = {
             [{ text: 'Поїздка по місту', callback_data: 'local' }],
             [{ text: 'Поїздка по Україні', callback_data: 'domestics' }],
             [{ text: 'Поїздка за кордон', callback_data: 'international' }],         
-            [{ text: 'Вихід 🚪', callback_data: 'exit' }]            
+            [{ text: `📩 Служба підтримки `, callback_data: 'support' }, { text: `❗❓ Питання `, callback_data: 'support' }]            
         ]
     },
 

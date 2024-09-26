@@ -15,21 +15,31 @@ export const anketaListiner = async () => {
             if (text === '/start') {
                 logger.info(`USER_ID: ${chatId} join BOT`);
 
-                await createNewUserByChatId(chatId);  
+                const user = await findUserByChatId(chatId);
 
-                await bot.sendMessage(
-                    chatId, 
-                    phrases.botInformation
-                );
+                if (user) {
+                    await bot.sendMessage(
+                        chatId, 
+                        phrases.mainMenu,
+                        { reply_markup: keyboards.selectArea }
+                    ); 
+                } else {
+                    await createNewUserByChatId(chatId);  
 
-                await delay(2000);
-
-                await bot.sendMessage(
-                    chatId, 
-                    phrases.askNumber,
-                    { reply_markup: keyboards.shareNumber }
-                );
-
+                    await bot.sendMessage(
+                        chatId, 
+                        phrases.botInformation
+                    );
+    
+                    await delay(2000);
+    
+                    await bot.sendMessage(
+                        chatId, 
+                        phrases.askNumber,
+                        { reply_markup: keyboards.shareNumber }
+                    );
+    
+                }                
             } 
             
         } catch (error) {
@@ -52,7 +62,7 @@ export const anketaListiner = async () => {
             await bot.sendMessage(
                 chatId, 
                 phrases.mainMenu,
-                { reply_markup: keyboards.mainMenu }
+                { reply_markup: keyboards.selectArea }
             );
 
         } catch (error) {
