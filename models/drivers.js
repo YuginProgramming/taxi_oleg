@@ -14,6 +14,10 @@ Driver.init({
         type: DataTypes.STRING,
         allowNull: true
     },
+    registration_number: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     phone: {
         type: DataTypes.STRING,
         allowNull: true
@@ -21,7 +25,7 @@ Driver.init({
 
 }, {
     freezeTableName: false,
-    timestamps: true,
+    timestamps: false,
     modelName: 'drivers',
     sequelize
 });
@@ -30,17 +34,24 @@ Driver.init({
 const createNewDriverByChatId = async (chat_id) => {
     let res;
     try {
-        res = await User.create({ chat_id });
+        res = await Driver.create({ chat_id });
         res = res.dataValues;
-        logger.info(`Created user with id: ${res.id}`);
+        logger.info(`Created driver with id: ${res.id}`);
     } catch (err) {
-        logger.error(`Impossible to create user: ${err}`);
+        logger.error(`Impossible to create driver: ${err}`);
     }
     return res;
 };
 
 
+const findDriverByChatId = async (chat_id) => {
+    const res = await Driver.findOne({ where: { chat_id } });
+    if (res) return res.dataValues;
+    return res;
+};
+
 export {
     Driver,
     createNewDriverByChatId,
+    findDriverByChatId
 };   

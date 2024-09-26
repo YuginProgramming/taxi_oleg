@@ -90,7 +90,7 @@ const buyTicket = async () => {
                             
                             await bot.sendMessage(
                                 chatId, 
-                                phrases.route,
+                                phrases.ride,
                                 { reply_markup: { inline_keyboard: ridesMenu } }
                             );
                         break;

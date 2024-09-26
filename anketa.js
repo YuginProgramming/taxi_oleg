@@ -12,8 +12,7 @@ export const anketaListiner = async () => {
         const text = message.text;
 
         try {
-            if (text === '/start') {
-                logger.info(`USER_ID: ${chatId} join BOT`);
+            if (text === '/start') {                
 
                 const user = await findUserByChatId(chatId);
 
@@ -25,6 +24,8 @@ export const anketaListiner = async () => {
                     ); 
                 } else {
                     await createNewUserByChatId(chatId);  
+
+                    logger.info(`USER_ID: ${chatId} join BOT`);
 
                     await bot.sendMessage(
                         chatId, 

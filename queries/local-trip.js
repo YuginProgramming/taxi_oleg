@@ -19,7 +19,7 @@ const localTrip = async () => {
                     await bot.sendMessage(
                     chatId, 
                     phrases.mainMenu,
-                    { reply_markup: keyboards.mainMenu }
+                    { reply_markup: keyboards.selectArea }
                 );
 
                     break;

@@ -35,12 +35,26 @@ const createNewLocalOrder = async (client, pickup_location, city) => {
         res = res.dataValues;
         logger.info(`Created LocalOrder with id: ${res.id}`);
     } catch (err) {
-        logger.error(`Impossible to create user: ${err}`);
+        logger.error(`Impossible to create LocalOrder: ${err}`);
     }
     return res;
 };
 
+const findLocalOrderById = async (id) => {
+    const res = await LocalOrders.findOne({ where: { id } });
+    if (res) return res.dataValues;
+    return res;
+};
+
+const updateDriverLocalOrderById = async (id, driver) => {
+    const res = await LocalOrders.update({ driver }, { where: { id } });
+    if (res) logger.info(`Driver ${driver} get the local order ${id}`);
+    return res[0] ? id : undefined;
+};
+
 export {
     LocalOrders,
-    createNewLocalOrder
+    createNewLocalOrder,
+    findLocalOrderById,
+    updateDriverLocalOrderById
 };
