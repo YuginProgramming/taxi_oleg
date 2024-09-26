@@ -5,6 +5,7 @@ import { sequelize } from './models/sequelize.js';
 import { localTrip } from './queries/local-trip.js'
 import buyTicket from './queries/buy-ticket.js';
 import server from './webserver.js';
+import getRide from './get-ride.js';
 
 const bot = new TelegramBot(dataBot.telegramBotToken, { polling: true });
 
@@ -37,6 +38,7 @@ anketaListiner();
 localTrip();
 buyTicket();
 server();
+getRide();
 
 // cron.schedule('0 0 * * *', () => {
 //     getStatistic();

@@ -9,7 +9,7 @@ import { dataBot } from "./values.js";
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
-export const anketaListiner = async () => {
+const getRide = async () => {
     bot.on('message', async (message) => {
         const chatId = message.chat.id;
         const text = message.text;
@@ -62,3 +62,5 @@ export const anketaListiner = async () => {
     });
     
 }
+
+export default getRide;
