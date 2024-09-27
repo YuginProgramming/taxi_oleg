@@ -148,7 +148,7 @@ const generateRidesMenu = async (ridesData, backcallback, chatId) => {
 
 }
 
-const generateSeatsMenu = async (seatId, ride_id, backcallback) => {
+const generateSeatsMenu = async (seatId, ride_id, backcallback, chatId) => {
     if (!seatId) {
         const menu = [
             [
@@ -164,15 +164,21 @@ const generateSeatsMenu = async (seatId, ride_id, backcallback) => {
 
         const seats = await findSeatById(seatId);
 
+        console.log(seats)
+
         if (!seats || !seats.seats) {
-            const menu = [
-                [
-                    { text: 'Назад 👈', callback_data: backcallback }, { text: 'Вихід 🚪', callback_data: 'exit' }
-                ],
-                
-            ]
-    
-            return menu;
+            await bot.sendMessage(
+                chatId, 
+                phrases.noSeates,
+                { reply_markup: { inline_keyboard: [
+                    [
+                        { text: 'Назад 👈', callback_data: backcallback }, { text: 'Вихід 🚪', callback_data: 'exit' }
+                    ],
+                    
+                ] } }
+            );
+
+            return;
         }
 
         const menu = seats.seats.map((seat, index) => {
@@ -185,9 +191,9 @@ const generateSeatsMenu = async (seatId, ride_id, backcallback) => {
             }
             return null;
         }).filter(button => button !== null);      
-
+        console.log('Menu'+ menu);
        
-        if (menu.length === 0) {
+        if (menu.length === 0 ) {
             await bot.sendMessage(
                 chatId, 
                 phrases.noSeates,

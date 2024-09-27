@@ -91,7 +91,8 @@ const buyTicket = async () => {
                             
 
                             const routesFromDomDeparture = await findDomesticRoutesFromDeparture(callback_info);
-                            if (routesFromDeparture.length === 0) {
+                            console.log(routesFromDomDeparture)
+                            if (routesFromDomDeparture.length === 0) {
                                 await bot.sendMessage(
                                     chatId, 
                                     phrases.noRoutes,
@@ -145,8 +146,8 @@ const buyTicket = async () => {
                                     }
                                 `});
 
-                            const seatsMenu = await generateSeatsMenu(rideData.seats_id, rideData.id, 'international');
-
+                            const seatsMenu = await generateSeatsMenu(rideData.seats_id, rideData.id, 'international', chatId);
+                                    console.log(seatsMenu)
                             if (!seatsMenu) return;
                             
                             await bot.sendMessage(

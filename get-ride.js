@@ -14,8 +14,8 @@ const getRide = async () => {
         const chatId = message.chat.id;
         const text = message.text;
 
-        const textCommand = text.split("@");
-        if (textCommand[0] === 'get') {    
+        const textCommand = text ? text.split("@") : undefined;
+        if (textCommand?.[0] === 'get') {    
             
             try {
                 const localOrder = await findLocalOrderById(textCommand[1]);
