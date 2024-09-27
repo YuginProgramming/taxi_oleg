@@ -90,6 +90,7 @@ const buyTicket = async () => {
                             const nextRides = await findFutureRidesByRouteID(callback_info);
                             const ridesMenu = await generateRidesMenu(nextRides, 'international');
 
+                            if (!ridesMenu) return;
                             
                             await bot.sendMessage(
                                 chatId, 

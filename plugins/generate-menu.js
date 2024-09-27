@@ -1,3 +1,5 @@
+import { bot } from "../app.js";
+import { phrases } from "../language_ua.js";
 import { buildRouteDescriptions, findRouteById } from "../models/routes.js";
 import { findSeatById } from "../models/seats.js";
 
@@ -95,8 +97,8 @@ const generateRoutesMenu = async (routesData, backcallback) => {
 
 }
 
-const generateRidesMenu = async (ridesData, backcallback) => {
-    if (!ridesData) {
+const generateRidesMenu = async (ridesData, backcallback, chatId) => {
+    if (ridesData == []) {
         const menu = [
             [
                 { text: 'Назад 👈', callback_data: backcallback }, { text: 'Вихід 🚪', callback_data: 'exit' }
@@ -104,7 +106,13 @@ const generateRidesMenu = async (ridesData, backcallback) => {
             
         ]
 
-        return menu;
+        await bot.sendMessage(
+            chatId, 
+            phrases.noRides,
+            { reply_markup: { inline_keyboard: menu } }
+        );
+
+        return;
 
     } else {
 
