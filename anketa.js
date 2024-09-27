@@ -21,6 +21,10 @@ export const anketaListiner = async () => {
                 if (user) {
                     await bot.sendMessage(
                         chatId, 
+                        phrases.botInformation
+                    );
+                    await bot.sendMessage(
+                        chatId, 
                         phrases.mainMenu,
                         { reply_markup: keyboards.selectArea }
                     ); 

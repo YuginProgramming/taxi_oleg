@@ -19,6 +19,11 @@ const localTrip = async () => {
                     await updateDiaulogueStatus(chatId, '');
 
                     await bot.sendMessage(
+                        chatId, 
+                        phrases.botInformation
+                    );
+                    
+                    await bot.sendMessage(
                     chatId, 
                     phrases.mainMenu,
                     { reply_markup: keyboards.selectArea }
