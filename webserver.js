@@ -101,7 +101,10 @@ const server = () => {
                 const pdfTicket = await generateTicketPDF(ticketData);
 
                 await bot.sendMessage(chat_id, 'Оплата пройшла успішно',
-                    { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
+                    { reply_markup: { inline_keyboard: [
+                        [{ text: 'Вихід 🚪', callback_data: 'exit' }],
+                        [{ text: 'Залишити коментар 💬', callback_data: `ticketComment+${createOrder.id}` }]
+                ] } }
                 );
 
                 await bot.sendDocument(chat_id, createReadStream(`./tickets/${pdfTicket}.pdf`))

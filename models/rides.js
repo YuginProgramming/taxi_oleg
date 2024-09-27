@@ -105,9 +105,33 @@ const findRideById = async (id) => {
 };
 
 
+const findAllTodayRides = async (date) => {
+    const res = await Rides.findAll({ where: { date } });
+    if (res.length > 0) return res.map(el => el.dataValues);
+    return;
+};
+
+const createRide = async (rideData) => {
+    let res;
+    try {
+        res = await Rides.create(rideData);
+        res = res.dataValues;
+    } catch (err) {
+        logger.error(`Impossible to create ride: ${err}`);
+    }
+    return res;
+};
+
+const updateSeatByRideID = async (id, seats_id) => {
+    const res = await Rides.update({ seats_id }, { where: { id } });
+    return res[0] ? id : undefined;
+};
 
 export {
     Rides,
     findFutureRidesByRouteID,
-    findRideById
+    findRideById,
+    findAllTodayRides,
+    createRide,
+    updateSeatByRideID
 };

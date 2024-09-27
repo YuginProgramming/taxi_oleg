@@ -1,6 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from './sequelize.js';
 import { logger } from '../logger/index.js';
+import { findCarById } from "./cars.js";
 
 class Seats extends Model {}
 
@@ -68,10 +69,25 @@ const updateSeatById = async (seats_id, seat, chat_id) => {
     }
 };
 
+const createNewSeatBycarId = async (car_id, ride_id) => {
+    let res;
+    try {
+        const car = await findCarById(car_id);
+        const seatsArray = new Array(car.seats).fill(0);
 
+        console.log(seatsArray)
+
+        res = await Seats.create({ ride_id, car_id, seats: seatsArray });
+        res = res.dataValues;
+    } catch (err) {
+        logger.error(`Impossible to create seats: ${err}`);
+    }
+    return res;
+}; 
 
 export {
     Seats,
     findSeatById,
-    updateSeatById
+    updateSeatById,
+    createNewSeatBycarId
 };

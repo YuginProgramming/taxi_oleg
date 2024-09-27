@@ -17,6 +17,10 @@ Orders.init({
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    comment: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
 }, {
     freezeTableName: false,
     timestamps: true, 
@@ -36,7 +40,13 @@ const createNewOrder = async (user, ride_id, seat) => {
     return res;
 };
 
+const updateCommentOrderById = async (id, comment) => {
+    const res = await Orders.update({ comment }, { where: { id } });
+    return res[0] ? res[0] : undefined;
+};
+
 export {
     Orders,
-    createNewOrder
+    createNewOrder,
+    updateCommentOrderById
 };

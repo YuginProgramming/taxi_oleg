@@ -18,6 +18,7 @@
     "express": "^4.21.0",
     "jspdf": "^2.5.2",
     "luxon": "^3.5.0",
+    "node-cron": "^3.0.3",
     "node-telegram-bot-api": "^0.66.0",
     "overshom-wayforpay": "^1.1.0",
     "pg": "^8.12.0",

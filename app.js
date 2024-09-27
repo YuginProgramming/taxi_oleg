@@ -6,6 +6,8 @@ import { localTrip } from './queries/local-trip.js'
 import buyTicket from './queries/buy-ticket.js';
 import server from './webserver.js';
 import getRide from './get-ride.js';
+import autoRides from './plugins/auto-rides.js';
+import cron from 'node-cron';
 
 const bot = new TelegramBot(dataBot.telegramBotToken, { polling: true });
 
@@ -40,9 +42,9 @@ buyTicket();
 server();
 getRide();
 
-// cron.schedule('0 0 * * *', () => {
-//     getStatistic();
-// }, {
-//     scheduled: true,
-//     timezone: 'Europe/Kiev' 
-// });
+ cron.schedule('0 0 * * *', () => {
+    autoRides();
+ }, {
+     scheduled: true,
+     timezone: 'Europe/Kiev' 
+ });

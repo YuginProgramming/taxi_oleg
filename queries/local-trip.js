@@ -1,8 +1,8 @@
 import { bot } from '../app.js';
 import { keyboards, phrases } from '../language_ua.js';
-import { createNewLocalOrder } from '../models/localOrders.js';
+import { createNewLocalOrder, updateCommentLocalOrderById } from '../models/localOrders.js';
 import { findAllCities, findCityById } from '../models/taxi-cities.js';
-import { findUserByChatId, updateUserByChatId } from '../models/user.js';
+import { findUserByChatId, updateDiaulogueStatus, updateUserByChatId } from '../models/user.js';
 import { generateLocaLLocationsMenu } from '../plugins/generate-menu.js';
 import { dataBot } from '../values.js';
 
@@ -16,6 +16,8 @@ const localTrip = async () => {
         try {
             switch (action) {
                 case 'exit':
+                    await updateDiaulogueStatus(chatId, '');
+
                     await bot.sendMessage(
                     chatId, 
                     phrases.mainMenu,
@@ -70,6 +72,25 @@ const localTrip = async () => {
                                 }   }    
                             );
 
+                            await delay (2000);
+
+                            await bot.sendMessage(
+                                chatId,
+                                phrases.sendAddress                                 
+                            );
+
+                            await updateDiaulogueStatus(chatId, 'address');
+
+                        break;
+
+                        case 'localComment': 
+                            await bot.sendMessage(
+                                chatId,
+                                phrases.leaveComment,
+                                { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }    
+                            );
+
+                            await updateDiaulogueStatus(chatId, 'localComment+' + callback_info);
                         break;
                     }                
             }
@@ -83,7 +104,9 @@ const localTrip = async () => {
         const chatId = msg.chat.id;
         const location = msg.location;
 
-        console.log(location)
+        console.log(location);
+
+        await updateDiaulogueStatus(chatId, '');
 
         try {
             const user = await findUserByChatId(chatId);
@@ -104,6 +127,55 @@ const localTrip = async () => {
         }
 
         
+    })
+
+    bot.on('message', async (message) => {
+        const chatId = message.chat.id;
+        const text = message.text;
+
+        
+
+        const user = await findUserByChatId(chatId);
+
+        const status = user.dialogue_status;
+
+        
+        const status_data = status ? status.split("+") : null;
+        const status_hook = status_data?.[0];
+
+        const status_info = status_data?.[1];
+        
+        if (user && user.dialogue_status === 'address') {
+            await updateDiaulogueStatus(chatId, '');
+
+            const order = await createNewLocalOrder(chatId, text, user.favorite_city);
+
+            const city = await findCityById(user.favorite_city)
+
+            await bot.sendMessage(dataBot.driversChannel, text);
+            await bot.sendMessage(dataBot.driversChannel, `Замовлення №: ${order.id+ ' ' +city.emoji+ ' ' + city.city + ' 📞' + user.phone}`);
+
+            await bot.sendMessage(chatId, 
+                phrases.taxiOnTheWay,
+                { reply_markup: { inline_keyboard: [
+                    [{ text: 'Вихід 🚪', callback_data: 'exit' }],
+                    [{ text: 'Залишити коментар 💬', callback_data: `localComment+${order.id}` }]
+                ]}}
+            );
+        }
+
+        if (status_hook === 'localComment') {
+            await updateDiaulogueStatus(chatId, '');
+
+            await updateCommentLocalOrderById(status_info, text)
+
+            await bot.sendMessage(dataBot.driversChannel, `Замовлення №: ${status_info+ ' 💬 Коментар: ' +text}`);
+
+            await bot.sendMessage(chatId, 
+                phrases.comentReceived,
+                { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
+            )
+        }
     })
 
 }

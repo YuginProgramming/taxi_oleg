@@ -21,6 +21,10 @@ LocalOrders.init({
         type: DataTypes.INTEGER,
         allowNull: true
     },
+    comment: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
 }, {
     freezeTableName: false,
     timestamps: true, 
@@ -52,9 +56,15 @@ const updateDriverLocalOrderById = async (id, driver) => {
     return res[0] ? id : undefined;
 };
 
+const updateCommentLocalOrderById = async (id, comment) => {
+    const res = await LocalOrders.update({ comment }, { where: { id } });
+    return res[0] ? id : undefined;
+};
+
 export {
     LocalOrders,
     createNewLocalOrder,
     findLocalOrderById,
-    updateDriverLocalOrderById
+    updateDriverLocalOrderById,
+    updateCommentLocalOrderById
 };

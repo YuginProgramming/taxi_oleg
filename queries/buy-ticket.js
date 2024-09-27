@@ -2,8 +2,10 @@ import { bot } from '../app.js';
 import { keyboards, phrases } from '../language_ua.js';
 import { findCarById } from '../models/cars.js';
 import { findAllDomesticsLocations, findAllLocations } from '../models/locations.js';
+import { updateCommentOrderById } from '../models/orders.js';
 import { findFutureRidesByRouteID, findRideById } from '../models/rides.js';
 import { buildRouteDescriptions, findDomesticRoutesFromDeparture, findInternationalRoutesFromDeparture, findRouteById } from '../models/routes.js';
+import { findUserByChatId } from '../models/user.js';
 import { generateDomesticsLocationsMenu, generateLocationsMenu, generateRidesMenu, generateRoutesMenu, generateSeatsMenu } from '../plugins/generate-menu.js';
 import { sessionCreate } from '../wfpinit.js';
 
@@ -142,6 +144,14 @@ const buyTicket = async () => {
                             );
                         break;
 
+                        case 'ticketComment':
+                            await bot.sendMessage(
+                                chatId,
+                                phrases.leaveComment,
+                                { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }    
+                            );
+
+                            await updateDiaulogueStatus(chatId, 'ticketComment+' + callback_info);
 
                     }                 
                     
@@ -152,6 +162,50 @@ const buyTicket = async () => {
             console.error('Error buy ticket query:', error);
         }
     });
+
+    bot.on('message', async (message) => {
+        const chatId = message.chat.id;
+        const text = message.text;
+
+        
+
+        const user = await findUserByChatId(chatId);
+
+        const status = user.dialogue_status;
+
+        const status_data = status ? status.split("+") : null;
+        const status_hook = status_data?.[0];
+
+        const status_info = status_data?.[1];
+        
+
+        if (status_hook === 'ticketComment') {
+            const user = await updateDiaulogueStatus(chatId, '');
+
+            const order = await updateCommentOrderById(status_info, text);
+
+
+            const ride = await findRideById(order.ride_id);
+
+            const routeData = await findRouteById(ride.route_id)
+                            
+            const routesDescriprion = await buildRouteDescriptions(routeData);
+
+            const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
+                Новий коментар
+🚐 ${routesDescriprion[0].description} 
+👉 Відправлення: ${ride.year+ '-' + ride.month + '-' + ride.date + '  ' + ride.time}
+📍 Місце: ${order.seat} 
+📞 ${user.phone}
+💬 Коментар: ${text} 
+            `);
+
+            await bot.sendMessage(chatId, 
+                phrases.comentReceived,
+                { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
+            )
+        }
+    })
 
 }
 

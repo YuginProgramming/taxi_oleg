@@ -18,6 +18,10 @@ User.init({
         type: DataTypes.STRING,
         allowNull: true
     },
+    dialogue_status: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
 
 }, {
     freezeTableName: false,
@@ -63,10 +67,9 @@ const updateUserByChatId = async (chat_id, updateParams) => {
     return undefined;
 };
 
-const userLogin = async (chat_id) => {
-    const res = await User.update({ isAuthenticated: true }, { where: { chat_id } });
-    if (res) logger.info(`Channel ${chat_id} logging in`);
-    return res[0] ? chat_id : undefined;
+const updateDiaulogueStatus = async (chat_id, dialogue_status) => {
+    const res = await User.update({ dialogue_status }, { where: { chat_id } });
+    return res[0] ? res[0] : undefined;
 };
 
 const userLogout = async (chat_id) => {
@@ -104,7 +107,7 @@ export {
     User,
     createNewUser,
     updateUserByChatId,
-    userLogin,
+    updateDiaulogueStatus,
     userLogout,
     findUserById,
     findUsersByStatus,
