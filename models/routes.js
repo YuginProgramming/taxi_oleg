@@ -29,7 +29,6 @@ const findRouteById = async (id) => {
 
 const findInternationalRoutesFromDeparture = async (departure_city) => {
     const res = await Routes.findAll({ where: { departure_city } });
-    console.log(res)
     if (res.length > 0) {
 
         const internationalRoutes = [];

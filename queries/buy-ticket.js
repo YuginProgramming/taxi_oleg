@@ -64,6 +64,20 @@ const buyTicket = async () => {
                             
 
                             const routesFromDeparture = await findInternationalRoutesFromDeparture(callback_info);
+
+                            console.log(routesFromDeparture)
+                            if (routesFromDeparture.length === 0) {
+                                await bot.sendMessage(
+                                    chatId, 
+                                    phrases.noRoutes,
+                                    { reply_markup: { inline_keyboard: [                                        [
+                                            { text: 'Назад 👈', callback_data: 'international' }, { text: 'Вихід 🚪', callback_data: 'exit' }
+                                        ],                                       
+                                    ] } }
+                                );
+
+                                return;
+                            }
                             const routesMenuData = await buildRouteDescriptions(routesFromDeparture);
                             const routesMenu = await generateRoutesMenu(routesMenuData, 'international');
                             await bot.sendMessage(
@@ -77,6 +91,18 @@ const buyTicket = async () => {
                             
 
                             const routesFromDomDeparture = await findDomesticRoutesFromDeparture(callback_info);
+                            if (routesFromDeparture.length === 0) {
+                                await bot.sendMessage(
+                                    chatId, 
+                                    phrases.noRoutes,
+                                    { reply_markup: { inline_keyboard: [                                        [
+                                            { text: 'Назад 👈', callback_data: 'international' }, { text: 'Вихід 🚪', callback_data: 'exit' }
+                                        ],                                       
+                                    ] } }
+                                );
+
+                                return;
+                            }
                             const routesDomData = await buildRouteDescriptions(routesFromDomDeparture);
                             const domRoutes = await generateRoutesMenu(routesDomData, 'domestics');
                             await bot.sendMessage(
@@ -88,10 +114,12 @@ const buyTicket = async () => {
 
                         case 'route':
                             const nextRides = await findFutureRidesByRouteID(callback_info);
-                            const ridesMenu = await generateRidesMenu(nextRides, 'international');
+
+                            console.log(nextRides)
+                            const ridesMenu = await generateRidesMenu(nextRides, 'international', chatId);
 
                             if (!ridesMenu) return;
-                            
+
                             await bot.sendMessage(
                                 chatId, 
                                 phrases.ride,
@@ -118,6 +146,8 @@ const buyTicket = async () => {
                                 `});
 
                             const seatsMenu = await generateSeatsMenu(rideData.seats_id, rideData.id, 'international');
+
+                            if (!seatsMenu) return;
                             
                             await bot.sendMessage(
                                 chatId, 
