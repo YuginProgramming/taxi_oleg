@@ -5,7 +5,7 @@ import { findAllDomesticsLocations, findAllLocations } from '../models/locations
 import { updateCommentOrderById } from '../models/orders.js';
 import { findFutureRidesByRouteID, findRideById } from '../models/rides.js';
 import { buildRouteDescriptions, findDomesticRoutesFromDeparture, findInternationalRoutesFromDeparture, findRouteById } from '../models/routes.js';
-import { findUserByChatId } from '../models/user.js';
+import { findUserByChatId, updateDiaulogueStatus } from '../models/user.js';
 import { generateDomesticsLocationsMenu, generateLocationsMenu, generateRidesMenu, generateRoutesMenu, generateSeatsMenu } from '../plugins/generate-menu.js';
 import { sessionCreate } from '../wfpinit.js';
 
