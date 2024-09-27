@@ -82,7 +82,7 @@ const server = () => {
                 const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
                     Покупка квитка
 🚐 ${routesDescriprion[0].description} 
-👉 Відправлення: ${ride.year+ '-' + ride.month + '-' + ride.date + '  ' + ride.time}
+👉 Відправлення: ${ride.time+ '-' + ride.date + '-' + ride.month + '  ' + ride.year}
 📍 Місце: ${seat} 
 📞 ${user.phone}
 💸 Вартість: ${ride.price} грн
