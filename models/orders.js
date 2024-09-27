@@ -45,8 +45,15 @@ const updateCommentOrderById = async (id, comment) => {
     return res[0] ? res[0] : undefined;
 };
 
+const findOrderById = async (id) => {
+    const res = await Orders.findOne({ where: { id } });
+    if (res) return res.dataValues;
+    return res;
+};
+
 export {
     Orders,
     createNewOrder,
-    updateCommentOrderById
+    updateCommentOrderById,
+    findOrderById
 };

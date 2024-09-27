@@ -2,10 +2,10 @@ import { bot } from '../app.js';
 import { keyboards, phrases } from '../language_ua.js';
 import { findCarById } from '../models/cars.js';
 import { findAllDomesticsLocations, findAllLocations } from '../models/locations.js';
-import { updateCommentOrderById } from '../models/orders.js';
+import { findOrderById, updateCommentOrderById } from '../models/orders.js';
 import { findFutureRidesByRouteID, findRideById } from '../models/rides.js';
 import { buildRouteDescriptions, findDomesticRoutesFromDeparture, findInternationalRoutesFromDeparture, findRouteById } from '../models/routes.js';
-import { findUserByChatId, updateDiaulogueStatus } from '../models/user.js';
+import { findUserByChatId, findUserById, updateDiaulogueStatus } from '../models/user.js';
 import { generateDomesticsLocationsMenu, generateLocationsMenu, generateRidesMenu, generateRoutesMenu, generateSeatsMenu } from '../plugins/generate-menu.js';
 import { sessionCreate } from '../wfpinit.js';
 
@@ -180,9 +180,13 @@ const buyTicket = async () => {
         
 
         if (status_hook === 'ticketComment') {
-            const user = await updateDiaulogueStatus(chatId, '');
+            await updateDiaulogueStatus(chatId, '');
 
-            const order = await updateCommentOrderById(status_info, text);
+            await updateCommentOrderById(status_info, text);
+
+            const order = await findOrderById(status_info);
+
+            const user = await findUserByChatId(chatId);
 
 
             const ride = await findRideById(order.ride_id);
