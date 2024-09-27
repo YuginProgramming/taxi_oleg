@@ -7,6 +7,7 @@ import { findFutureRidesByRouteID, findRideById } from '../models/rides.js';
 import { buildRouteDescriptions, findDomesticRoutesFromDeparture, findInternationalRoutesFromDeparture, findRouteById } from '../models/routes.js';
 import { findUserByChatId, findUserById, updateDiaulogueStatus } from '../models/user.js';
 import { generateDomesticsLocationsMenu, generateLocationsMenu, generateRidesMenu, generateRoutesMenu, generateSeatsMenu } from '../plugins/generate-menu.js';
+import { dataBot } from '../values.js';
 import { sessionCreate } from '../wfpinit.js';
 
 const buyTicket = async () => {
