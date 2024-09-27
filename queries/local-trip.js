@@ -120,7 +120,10 @@ const localTrip = async () => {
 
             await bot.sendMessage(chatId, 
                 phrases.taxiOnTheWay,
-                { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
+                { reply_markup: { inline_keyboard: [
+                    [{ text: 'Вихід 🚪', callback_data: 'exit' }],
+                    [{ text: 'Залишити коментар 💬', callback_data: `localComment+${order.id}` }]
+                ]} }
             )
         } catch (error) {
             console.log(error)

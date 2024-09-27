@@ -111,7 +111,7 @@ const buyTicket = async () => {
                                 carData.scheme,
                                 { caption: `
                                     🚐 ${routesDescriprion[0].description}
-📆 ${rideData.year+ '-' + rideData.month + '-' + rideData.date + '  ' + rideData.time}
+📆 ${rideData.time+ '-' + rideData.date + '-' + rideData.month + '  ' + rideData.year}
 💸 ${rideData.price + 'грн.'
                                     }
                                 `});
