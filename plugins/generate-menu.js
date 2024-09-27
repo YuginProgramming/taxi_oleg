@@ -123,7 +123,7 @@ const generateRidesMenu = async (ridesData, backcallback) => {
         console.log(routesDescriprion)
 
         const menu = ridesData.map((ride, index) => [
-            { text: routesDescriprion[index].description+ '    ' + ride.year+ '-' + ride.month + '-' + ride.date + '  ' + ride.time, callback_data: 'ride+' + ride.id }
+            { text: routesDescriprion[index].description+ '    ' + ride.time+ '-' + ride.date + '-' + ride.month + '  ' + ride.year, callback_data: 'ride+' + ride.id }
         ]);
 
         const defaultButttons = 
