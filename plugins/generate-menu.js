@@ -183,6 +183,7 @@ const generateSeatsMenu = async (seatId, ride_id, backcallback, chatId) => {
 
         const menu = seats.seats.map((seat, index) => {
             const seatNumber = index + 1;
+            if (index === 0) return null;
             if (seat === 0) {
                 return  {
                     text: `${seatNumber} 💺`,

@@ -16,6 +16,10 @@ export const anketaListiner = async () => {
         const chatId = message.chat.id;
         const text = message.text;
 
+        const user = await findUserByChatId(chatId);
+
+        const status = user.dialogue_status;
+
         try {
             if (text === '/start') {                
 
@@ -53,6 +57,40 @@ export const anketaListiner = async () => {
     
                 }                
             } 
+            
+            if (text === '/pay') {
+                await updateDiaulogueStatus(chatId, 'pay');
+
+                await bot.sendMessage(
+                    chatId, 
+                    phrases.paymantAmount
+                );
+
+            }
+            if (user && user.dialogue_status === 'pay') {
+                if (isNumber(text)) {
+                    await updateDiaulogueStatus(chatId, '');
+    
+   
+    
+                    const paymentLink = await sessionCreate(text, 'pay', 'pay', chatId);
+        
+                    await bot.sendMessage(
+                        chatId, 
+                        `
+    Перейдіть за посиланням на для оплати
+                        `,
+                        { reply_markup: { inline_keyboard: [[{text: `Оплатити ${text}`, url: paymentLink}]] } }
+                    );
+                }
+                } else {
+                    await bot.sendMessage(
+                        chatId, 
+                        phrases.wrongAmount
+                    );
+                }
+                
+
             
         } catch (error) {
             console.error('Error handling message:', error);

@@ -62,68 +62,75 @@ const server = () => {
             const ride_id = metadata[1];            
             const chat_id = metadata[2];
 
-            console.log(metadata);
+            
 
             if (data.transactionStatus === 'Approved') {
                 console.log(chat_id, seat, ride_id);
-               
-                const user = await findUserByChatId(chat_id);
 
-                const ride = await findRideById(ride_id);
-                
-                const updateSeat = await updateSeatById(ride.seats_id, seat - 1, chat_id);
+                if (seat == 'pay') {
+                    await bot.sendMessage(chat_id, 'Оплата пройшла успішно',
+                    );
+                } else {
+                    const user = await findUserByChatId(chat_id);
 
-                const createOrder = await createNewOrder(chat_id, ride_id, seat);
-                
-                const routeData = await findRouteById(ride.route_id)
-                            
-                const routesDescriprion = await buildRouteDescriptions(routeData);
-
-                const isDomestic = await isDomesticRoute(ride.route_id);
-
-                if (isDomestic) {
-                    const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
-                        Покупка квитка
-    🚐 ${routesDescriprion[0].description} 
-    👉 Відправлення: ${ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year}
-    📍 Місце: ${seat} 
-    📞 ${user.phone}
-    💸 Вартість: ${ride.price} грн
-                    `);
-                } if  (isDomestic === false ) {
-                    const ticketMessage = await bot.sendMessage(dataBot.ticketsInternational, `
-                        Покупка квитка
-    🚐 ${routesDescriprion[0].description} 
-    👉 Відправлення: ${ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year}
-    📍 Місце: ${seat} 
-    📞 ${user.phone}
-    💸 Вартість: ${ride.price} грн
-                    `);
+                    const ride = await findRideById(ride_id);
+                    
+                    const updateSeat = await updateSeatById(ride.seats_id, seat - 1, chat_id);
+    
+                    const createOrder = await createNewOrder(chat_id, ride_id, seat);
+                    
+                    const routeData = await findRouteById(ride.route_id)
+                                
+                    const routesDescriprion = await buildRouteDescriptions(routeData);
+    
+                    const isDomestic = await isDomesticRoute(ride.route_id);
+    
+                    if (isDomestic) {
+                        const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
+                            Покупка квитка
+        🚐 ${routesDescriprion[0].description} 
+        👉 Відправлення: ${ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year}
+        📍 Місце: ${seat} 
+        📞 ${user.phone}
+        💸 Вартість: ${ride.price} грн
+                        `);
+                    } if  (isDomestic === false ) {
+                        const ticketMessage = await bot.sendMessage(dataBot.ticketsInternational, `
+                            Покупка квитка
+        🚐 ${routesDescriprion[0].description} 
+        👉 Відправлення: ${ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year}
+        📍 Місце: ${seat} 
+        📞 ${user.phone}
+        💸 Вартість: ${ride.price} грн
+                        `);
+                    }
+    
+                    
+                    
+                    const ticketData = {
+                        route: routesDescriprion[0].description,
+                        departure:  ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year,
+                        seat: seat,
+                        phone: user.phone,
+                        price: ride.price,
+                        qrLink: 'https://t.me/c/2353966055/' + ticketMessage.message_id,
+                        ticketId: createOrder.id
+                    };
+    
+                    const pdfTicket = await generateTicketPDF(ticketData);
+    
+                    await bot.sendMessage(chat_id, 'Оплата пройшла успішно',
+                        { reply_markup: { inline_keyboard: [
+                            [{ text: 'Вихід 🚪', callback_data: 'exit' }],
+                            [{ text: 'Залишити коментар 💬', callback_data: `ticketComment+${createOrder.id}` }]
+                    ] } }
+                    );
+    
+                    await bot.sendDocument(chat_id, createReadStream(`./tickets/${pdfTicket}.pdf`))
+    
                 }
-
+               
                 
-                
-                const ticketData = {
-                    route: routesDescriprion[0].description,
-                    departure:  ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year,
-                    seat: seat,
-                    phone: user.phone,
-                    price: ride.price,
-                    qrLink: 'https://t.me/c/2353966055/' + ticketMessage.message_id,
-                    ticketId: createOrder.id
-                };
-
-                const pdfTicket = await generateTicketPDF(ticketData);
-
-                await bot.sendMessage(chat_id, 'Оплата пройшла успішно',
-                    { reply_markup: { inline_keyboard: [
-                        [{ text: 'Вихід 🚪', callback_data: 'exit' }],
-                        [{ text: 'Залишити коментар 💬', callback_data: `ticketComment+${createOrder.id}` }]
-                ] } }
-                );
-
-                await bot.sendDocument(chat_id, createReadStream(`./tickets/${pdfTicket}.pdf`))
-
             } else {
                 return res.status(200).json('Webhook Error: Unhandled event type');
             }
