@@ -141,7 +141,7 @@ const buyTicket = async () => {
                                 carData.scheme,
                                 { caption: `
                                     🚐 ${routesDescriprion[0].description}
-📆 ${rideData.time+ '-' + rideData.date + '-' + rideData.month + '  ' + rideData.year}
+📆 ${rideData.time+ '•' + rideData.date + '.' + rideData.month + '.' + rideData.year}
 💸 ${rideData.price + 'грн.'
                                     }
                                 `});
@@ -168,7 +168,7 @@ const buyTicket = async () => {
                                 chatId, 
                                 `
 🚐 ${routesSeatDescriprion[0].description} 
-👉 Відправлення: ${seatRideData.year+ '-' + seatRideData.month + '-' + seatRideData.date + '  ' + seatRideData.time}
+👉 Відправлення: ${seatRideData.time+ '•' + seatRideData.date + '.' + seatRideData.month + '.' + seatRideData.year}
 📍 Місце: ${callback_info} 
 
 💸 Вартість: ${seatRideData.price} грн

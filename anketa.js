@@ -7,6 +7,11 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 export const anketaListiner = async () => {
+    bot.setMyCommands([
+        {command: '/pay', description: 'Зробити оплату (з вибором суми)'},
+        {command: '/start', description: 'Повернутися до головного меню'},
+      ]);
+
     bot.on('message', async (message) => {
         const chatId = message.chat.id;
         const text = message.text;
