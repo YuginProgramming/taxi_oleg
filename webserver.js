@@ -7,7 +7,7 @@ import { findUserByChatId, findUserByPhone } from "./models/user.js";
 import { findRideById } from "./models/rides.js";
 import { updateSeatById } from "./models/seats.js";
 import { createNewOrder } from "./models/orders.js";
-import { buildRouteDescriptions, findRouteById } from "./models/routes.js";
+import { buildRouteDescriptions, findRouteById, isDomesticRoute } from "./models/routes.js";
 import generateTicketPDF from "./plugins/generate-ticket.js";
 import { createReadStream } from "fs";
 
@@ -79,14 +79,29 @@ const server = () => {
                             
                 const routesDescriprion = await buildRouteDescriptions(routeData);
 
-                const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
-                    Покупка квитка
-🚐 ${routesDescriprion[0].description} 
-👉 Відправлення: ${ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year}
-📍 Місце: ${seat} 
-📞 ${user.phone}
-💸 Вартість: ${ride.price} грн
-                `);
+                const isDomestic = await isDomesticRoute(ride.route_id);
+
+                if (isDomestic) {
+                    const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
+                        Покупка квитка
+    🚐 ${routesDescriprion[0].description} 
+    👉 Відправлення: ${ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year}
+    📍 Місце: ${seat} 
+    📞 ${user.phone}
+    💸 Вартість: ${ride.price} грн
+                    `);
+                } if  (isDomestic === false ) {
+                    const ticketMessage = await bot.sendMessage(dataBot.ticketsInternational, `
+                        Покупка квитка
+    🚐 ${routesDescriprion[0].description} 
+    👉 Відправлення: ${ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year}
+    📍 Місце: ${seat} 
+    📞 ${user.phone}
+    💸 Вартість: ${ride.price} грн
+                    `);
+                }
+
+                
                 
                 const ticketData = {
                     route: routesDescriprion[0].description,

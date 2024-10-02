@@ -88,6 +88,22 @@ const buildRouteDescriptions = async (routes) => {
     return routeDescriptions;
 };
 
+const isDomesticRoute = async (routeId) => {
+
+    const route = await Routes.findOne({ where: { id: routeId } });
+    if (!route) {
+        throw new Error(`Route with ID ${routeId} not found`);
+    }
+
+    const departure = await Locations.findOne({ where: { id: route.departure_city } });
+    const target = await Locations.findOne({ where: { id: route.arrival_city } });
+
+    if (!departure || !target) {
+        throw new Error(`Locations for the route not found`);
+    }
+
+    return departure.country === '🇺🇦' && target.country === '🇺🇦';
+};
 
 
 
@@ -96,5 +112,6 @@ export {
     findInternationalRoutesFromDeparture,
     findDomesticRoutesFromDeparture,
     buildRouteDescriptions,
-    findRouteById
+    findRouteById,
+    isDomesticRoute
 };
