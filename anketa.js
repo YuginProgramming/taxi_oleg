@@ -67,8 +67,8 @@ export const anketaListiner = async () => {
                 );
 
             }
-            if (user && user.dialogue_status === 'pay') {
-                if (isNumber(text)) {
+            if (user && status === 'pay') {
+                if (!isNaN(text)) {
                     await updateDiaulogueStatus(chatId, '');
     
    
@@ -82,14 +82,13 @@ export const anketaListiner = async () => {
                         `,
                         { reply_markup: { inline_keyboard: [[{text: `Оплатити ${text}`, url: paymentLink}]] } }
                     );
-                }
                 } else {
                     await bot.sendMessage(
                         chatId, 
                         phrases.wrongAmount
                     );
                 }
-                
+            }
 
             
         } catch (error) {

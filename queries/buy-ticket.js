@@ -6,6 +6,7 @@ import { findOrderById, updateCommentOrderById } from '../models/orders.js';
 import { findFutureRidesByRouteID, findRideById } from '../models/rides.js';
 import { buildRouteDescriptions, findDomesticRoutesFromDeparture, findInternationalRoutesFromDeparture, findRouteById } from '../models/routes.js';
 import { findUserByChatId, findUserById, updateDiaulogueStatus } from '../models/user.js';
+import formatNumber from '../plugins/formatNumber.js';
 import { generateDomesticsLocationsMenu, generateLocationsMenu, generateRidesMenu, generateRoutesMenu, generateSeatsMenu } from '../plugins/generate-menu.js';
 import { dataBot } from '../values.js';
 import { sessionCreate } from '../wfpinit.js';
@@ -120,6 +121,8 @@ const buyTicket = async () => {
                             const ridesMenu = await generateRidesMenu(nextRides, 'international', chatId);
 
                             if (!ridesMenu) return;
+                            
+                            await updateDiaulogueStatus(chatId, `route+${callback_info}`);
 
                             await bot.sendMessage(
                                 chatId, 
@@ -158,6 +161,7 @@ const buyTicket = async () => {
                             
                         break;
                         case 'seat':
+                           
                             const seatRideData = await findRideById(callback_next);
                             const routeSeat = await findRouteById(seatRideData.route_id)
                             
@@ -168,7 +172,7 @@ const buyTicket = async () => {
                                 chatId, 
                                 `
 🚐 ${routesSeatDescriprion[0].description} 
-👉 Відправлення: ${seatRideData.time+ '•' + seatRideData.date + '.' + seatRideData.month + '.' + seatRideData.year}
+👉 Відправлення: ${seatRideData.time+ '•' + formatNumber(seatRideData.date) + '.' + seatRideData.month + '.' + seatRideData.year}
 📍 Місце: ${callback_info} 
 
 💸 Вартість: ${seatRideData.price} грн
@@ -231,7 +235,7 @@ const buyTicket = async () => {
             const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
                 Новий коментар
 🚐 ${routesDescriprion[0].description} 
-👉 Відправлення: ${ride.year+ '-' + ride.month + '-' + ride.date + '  ' + ride.time}
+👉 Відправлення: ${ride.time+ '•' + formatNumber(seatRideData.date) + '.' + ride.month + '.' + ride.year}
 📍 Місце: ${order.seat} 
 📞 ${user.phone}
 💬 Коментар: ${text} 

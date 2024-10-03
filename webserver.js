@@ -10,6 +10,7 @@ import { createNewOrder } from "./models/orders.js";
 import { buildRouteDescriptions, findRouteById, isDomesticRoute } from "./models/routes.js";
 import generateTicketPDF from "./plugins/generate-ticket.js";
 import { createReadStream } from "fs";
+import formatNumber from "./plugins/formatNumber.js";
 
 
 const server = () => {
@@ -98,7 +99,7 @@ const server = () => {
                         const ticketMessage = await bot.sendMessage(dataBot.ticketsInternational, `
                             Покупка квитка
         🚐 ${routesDescriprion[0].description} 
-        👉 Відправлення: ${ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year}
+        👉 Відправлення: ${ride.time+ '•' + formatNumber(ride.date) + '.' + ride.month + '.' + ride.year}
         📍 Місце: ${seat} 
         📞 ${user.phone}
         💸 Вартість: ${ride.price} грн
@@ -109,7 +110,7 @@ const server = () => {
                     
                     const ticketData = {
                         route: routesDescriprion[0].description,
-                        departure:  ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year,
+                        departure:  ride.time+ '•' +formatNumber(ride.date) + '.' + ride.month + '.' + ride.year,
                         seat: seat,
                         phone: user.phone,
                         price: ride.price,

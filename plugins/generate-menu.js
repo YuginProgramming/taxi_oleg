@@ -2,6 +2,7 @@ import { bot } from "../app.js";
 import { phrases } from "../language_ua.js";
 import { buildRouteDescriptions, findRouteById } from "../models/routes.js";
 import { findSeatById } from "../models/seats.js";
+import formatNumber from "./formatNumber.js";
 
 
 const generateLocationsMenu = async (locations, backcallback) => {
@@ -131,7 +132,7 @@ const generateRidesMenu = async (ridesData, backcallback, chatId) => {
         console.log(routesDescriprion)
 
         const menu = ridesData.map((ride, index) => [
-            { text: routesDescriprion[index].description+ '    ' + ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year, callback_data: 'ride+' + ride.id }
+            { text: routesDescriprion[index].description+ '    ' + ride.time+ '•' + formatNumber(ride.date) + '.' + ride.month + '.' + ride.year, callback_data: 'ride+' + ride.id }
         ]);
 
         const defaultButttons = 

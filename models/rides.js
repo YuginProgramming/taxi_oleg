@@ -127,11 +127,18 @@ const updateSeatByRideID = async (id, seats_id) => {
     return res[0] ? id : undefined;
 };
 
+const findAllTodayRouteRides = async (route_id, date, month, year) => {
+    const res = await Rides.findAll({ where: { route_id, date, month, year } });
+    if (res.length > 0) return res.map(el => el.dataValues);
+    return;
+};
+
 export {
     Rides,
     findFutureRidesByRouteID,
     findRideById,
     findAllTodayRides,
     createRide,
-    updateSeatByRideID
+    updateSeatByRideID,
+    findAllTodayRouteRides,
 };

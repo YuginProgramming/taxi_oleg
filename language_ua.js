@@ -1,29 +1,5 @@
 const keyboards = {
-    routesMenu: {
-        inline_keyboard: [
-            [{ text: '🇧🇬 Київ Софія', callback_data: 'kyiv' }],
-            [{ text: '🇺🇦 Одеса Львів', callback_data: 'odesa' }]
-        ]
-    },
-    scheduleMenu: {
-        inline_keyboard: [
-            [{ text: '🕗 Сьогодні', callback_data: 'today' }],
-            [{ text: '🕗 Завтра', callback_data: 'tomorrow' }]
-        ]
-    },
-    sitsMenu: {
-        inline_keyboard: [
-            [{ text: '🪑 1', callback_data: 'payment' }, { text: '🪑 2', callback_data: 'payment' }, { text: '🪑 3', callback_data: 'payment' }],
-            [{ text: '🪑 4', callback_data: 'payment' }, { text: '🪑 5', callback_data: 'payment' }, { text: ' 🪑6', callback_data: 'payment' }],
-            [{ text: '🪑 7', callback_data: 'payment' }, { text: '🪑 8', callback_data: 'payment' }]
-        ]
-    },    
-    paymentMenu: {
-        inline_keyboard: [
-            [{ text: '💳 Оплатити зараз карткою', callback_data: 'sit7' }],
-            [{ text: '💵 Оплатити готівкою водію в салоні', callback_data: 'sit7' }]
-        ]
-    },
+    
     mainMenu: {
         inline_keyboard: [
             [{ text: `🎫 Купити квиток `, callback_data: 'buyTicket' }],
@@ -58,47 +34,7 @@ const keyboards = {
         one_time_keyboard: true,
         resize_keyboard: true
     },
-    lowBalance: {
-        keyboard: [
-            [{ text: 'Поповнити баланс картки' }],
-            [{ text: 'Вибрати інший спосіб оплати' }],
-            [{ text: 'Повернутися до головного меню' }]
-        ],
-        one_time_keyboard: true,
-        resize_keyboard: true
-    },
-    binarKeys: {
-        keyboard: [
-            [{ text: 'Так' }],
-            [{ text: 'Ні' }]
-        ],
-        one_time_keyboard: true,
-        resize_keyboard: true
-    },
-    failVerify: {
-        keyboard: [
-            [{ text: 'Служба підтримки' }],
-            [{ text: 'Повернутися до головного меню' }]
-        ],
-        one_time_keyboard: true,
-        resize_keyboard: true
-    },
-    mainMenuButton: {
-        keyboard: [
-            [{ text: 'Повернутися до головного меню' }]
-        ],
-        one_time_keyboard: true,
-        resize_keyboard: true
-    },
-    paymantMethod: {
-        keyboard: [
-            [{ text: 'Готівкою' }],
-            [{ text: 'Картка Visa/Mastercard' }],
-            [{ text: 'Балансом картки Водолій' }]
-        ],
-        one_time_keyboard: true,
-        resize_keyboard: true
-    },
+    
     shareNumber: { keyboard: [
         [{ 
             text: 'Поділитися номером',
@@ -122,7 +58,8 @@ const phrases = {
     departure: `Для оформлення квитка оберіть місто відправлення 👇:`,
     localDepCity: `Місто відправлення 👇:`,
     route: `Оберіть маршрут поїздки 👇:`,
-    ride: `Оберіть дату та час поїздки 👇:`,
+    ride: `Оберіть дату та час поїздки 👇 або напишіть свою у форматі, рік-місяць-день, за допомогою клавіатури. 
+Наприклад, 2021-12-01`,
     seat: `Будь ласка, оберіть місце 👇:`,
     geolocation: 'Будь ласка, надішліть свою геопозицію:',
     sendGeo: 'Або поділіться розташуванням за допомогою кнопки «надіслати геопозицію» 👇:',
