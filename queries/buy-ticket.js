@@ -245,7 +245,7 @@ const buyTicket = async () => {
                             
             const routesDescriprion = await buildRouteDescriptions(routeData);
 
-            const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
+            const ticketMessage = await bot.sendMessage(chat, `
                 Новий коментар
 🚐 ${routesDescriprion[0].description} 
 👉 Відправлення: ${ride.time+ '•' + formatNumber(ride.date) + '.' + ride.month + '.' + ride.year}
