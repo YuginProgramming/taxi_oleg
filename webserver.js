@@ -88,9 +88,11 @@ const server = () => {
                     const routesDescriprion = await buildRouteDescriptions(routeData);
     
                     const isDomestic = await isDomesticRoute(ride.route_id);
+
+                    let ticketMessage = '';
     
                     if (isDomestic) {
-                        const ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
+                        ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
                             Покупка квитка
         🚐 ${routesDescriprion[0].description} 
         👉 Відправлення: ${ride.time+ '•' + ride.date + '.' + ride.month + '.' + ride.year}
@@ -99,7 +101,7 @@ const server = () => {
         💸 Вартість: ${ride.price} грн
                         `);
                     } if  (isDomestic === false ) {
-                        const ticketMessage = await bot.sendMessage(dataBot.ticketsInternational, `
+                        ticketMessage = await bot.sendMessage(dataBot.ticketsInternational, `
                             Покупка квитка
         🚐 ${routesDescriprion[0].description} 
         👉 Відправлення: ${ride.time+ '•' + formatNumber(ride.date) + '.' + ride.month + '.' + ride.year}
