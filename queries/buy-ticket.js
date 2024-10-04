@@ -190,7 +190,7 @@ const buyTicket = async () => {
                                 { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }    
                             );
 
-                            await updateDiaulogueStatus(chatId, 'ticketComment+' + callback_info + callback_next);
+                            await updateDiaulogueStatus(chatId, 'ticketComment+' + callback_info + '+' + callback_next);
 
                     }                 
                     
