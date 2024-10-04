@@ -71,6 +71,9 @@ const server = () => {
                 if (seat == 'pay') {
                     await bot.sendMessage(chat_id, 'Оплата пройшла успішно',
                     );
+
+                    await bot.sendMessage(dataBot.driversChannel, `Оплачено ${data.amount}`);
+
                 } else {
                     const user = await findUserByChatId(chat_id);
 
