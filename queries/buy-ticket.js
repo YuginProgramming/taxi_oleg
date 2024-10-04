@@ -164,6 +164,8 @@ const buyTicket = async () => {
                            
                             const seatRideData = await findRideById(callback_next);
                             const routeSeat = await findRouteById(seatRideData.route_id)
+
+                            await updateDiaulogueStatus(chatId, ``);
                             
                             const routesSeatDescriprion = await buildRouteDescriptions(routeSeat);
 

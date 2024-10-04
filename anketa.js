@@ -2,6 +2,7 @@ import { bot } from "./app.js";
 import { keyboards, phrases } from './language_ua.js';
 import { createNewUserByChatId, findUserByChatId, updateDiaulogueStatus, updateUserByChatId } from './models/user.js';
 import { logger } from "./logger/index.js";
+import { sessionCreate } from "./wfpinit.js";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 

@@ -99,7 +99,7 @@ const generateRoutesMenu = async (routesData, backcallback) => {
 }
 
 const generateRidesMenu = async (ridesData, backcallback, chatId) => {
-    if (ridesData.length === 0) {
+    if (ridesData === undefined || ridesData?.length === 0 ) {
         const menu = [
             [
                 { text: 'Назад 👈', callback_data: backcallback }, { text: 'Вихід 🚪', callback_data: 'exit' }

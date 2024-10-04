@@ -1,5 +1,9 @@
-import { findAllTodayRouteRides } from "../models/rides";
-import parseDateString from "../plugins/pasrseDate";
+import { bot } from "../app.js";
+import { phrases } from "../language_ua.js";
+import { findAllTodayRouteRides } from "../models/rides.js";
+import { findUserByChatId, updateDiaulogueStatus } from "../models/user.js";
+import { generateRidesMenu } from "../plugins/generate-menu.js";
+import parseDateString from "../plugins/pasrseDate.js";
 
 
 const getRideByDate = () => {
@@ -23,7 +27,7 @@ const getRideByDate = () => {
 
             if (!ridesMenu) return;
                             
-            await updateDiaulogueStatus(chatId, ``);
+            
 
             await bot.sendMessage(
                 chatId, 
@@ -34,3 +38,5 @@ const getRideByDate = () => {
         }
     })
 }
+
+export default getRideByDate;

@@ -9,6 +9,7 @@ import getRide from './get-ride.js';
 import autoRides from './plugins/auto-rides.js';
 import cron from 'node-cron';
 import support from './queries/support.js';
+import getRideByDate from './queries/getRideByDate.js';
 
 const bot = new TelegramBot(dataBot.telegramBotToken, { polling: true });
 
@@ -43,6 +44,7 @@ buyTicket();
 server();
 getRide();
 support();
+getRideByDate();
 
  cron.schedule('0 0 * * *', () => {
     autoRides();

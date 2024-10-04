@@ -1,4 +1,5 @@
 import { bot } from "../app.js";
+import { findUserByChatId, updateDiaulogueStatus } from "../models/user.js";
 import { dataBot } from "../values.js";
 
 const supportChatId = dataBot.support; // ID чату саппорта
@@ -9,7 +10,7 @@ const support = async () => {
         const chatId = query.message.chat.id;
 
         if (action === 'support') {
-            await updateDialogueStatus(chatId, 'support');
+            await updateDiaulogueStatus(chatId, 'support');
             await bot.sendMessage(chatId, 'Ви звернулися до служби підтримки. Чекайте на відповідь.');
             
             await bot.sendMessage(supportChatId, `Новий запит до підтримки від користувача ${chatId}.`);

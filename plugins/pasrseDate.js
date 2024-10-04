@@ -1,6 +1,6 @@
 const parseDateString = (dateString) => {
 
-    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    const regex = /^\d{2}-\d{2}-\d{4}$/;
 
     if (regex.test(dateString)) {
         const dateParts = dateString.split('-').map(Number);
