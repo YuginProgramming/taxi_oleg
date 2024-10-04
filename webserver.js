@@ -131,6 +131,18 @@ const server = () => {
                             [{ text: 'Залишити коментар 💬', callback_data: `ticketComment+${createOrder.id}` }]
                     ] } }
                     );
+
+                    const answer = {
+                        orderReference: data.orderReference,
+                        status: 'accept',
+                        time: Date.now(),
+                        signature: '',
+                    };
+                    const forHashString = [answer.orderReference, answer.status, answer.time].join(';');
+                    const hash = crypto.createHmac('md5', dataBot.merchant_sercret).update(forHashString).digest('hex');
+                    answer.signature = hash;
+        
+                    res.status(200).send(answer);
     
                     await bot.sendDocument(chat_id, createReadStream(`./tickets/${pdfTicket}.pdf`))
     
@@ -141,17 +153,7 @@ const server = () => {
                 return res.status(200).json('Webhook Error: Unhandled event type');
             }
 
-            const answer = {
-                orderReference: data.orderReference,
-                status: 'accept',
-                time: Date.now(),
-                signature: '',
-            };
-            const forHashString = [answer.orderReference, answer.status, answer.time].join(';');
-            const hash = crypto.createHmac('md5', dataBot.merchant_sercret).update(forHashString).digest('hex');
-            answer.signature = hash;
-
-            return res.status(200).send(answer);
+            
         } catch (err) {
             console.error('Error processing webhook:', err);
             return res.status(500).send('Server Error');
