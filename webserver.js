@@ -90,6 +90,8 @@ const server = () => {
                     const isDomestic = await isDomesticRoute(ride.route_id);
 
                     let ticketMessage = '';
+
+                    let direction = ''
     
                     if (isDomestic) {
                         ticketMessage = await bot.sendMessage(dataBot.ticketsChannel, `
@@ -100,6 +102,8 @@ const server = () => {
         📞 ${user.phone}
         💸 Вартість: ${ride.price} грн
                         `);
+
+                        direction = 'domestic';
                     } if  (isDomestic === false ) {
                         ticketMessage = await bot.sendMessage(dataBot.ticketsInternational, `
                             Покупка квитка
@@ -109,6 +113,8 @@ const server = () => {
         📞 ${user.phone}
         💸 Вартість: ${ride.price} грн
                         `);
+
+                        direction = 'international';
                     }
     
                     
@@ -128,7 +134,7 @@ const server = () => {
                     await bot.sendMessage(chat_id, 'Оплата пройшла успішно',
                         { reply_markup: { inline_keyboard: [
                             [{ text: 'Вихід 🚪', callback_data: 'exit' }],
-                            [{ text: 'Залишити коментар 💬', callback_data: `ticketComment+${createOrder.id}` }]
+                            [{ text: 'Залишити коментар 💬', callback_data: `ticketComment+${createOrder.id}+${direction}` }]
                     ] } }
                     );
 

@@ -190,7 +190,7 @@ const buyTicket = async () => {
                                 { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }    
                             );
 
-                            await updateDiaulogueStatus(chatId, 'ticketComment+' + callback_info);
+                            await updateDiaulogueStatus(chatId, 'ticketComment+' + callback_info + callback_next);
 
                     }                 
                     
@@ -216,7 +216,18 @@ const buyTicket = async () => {
         const status_hook = status_data?.[0];
 
         const status_info = status_data?.[1];
+
+        const status_direction = status_data?.[2];
         
+        let chat;
+
+        if (status_direction === 'domestic') {
+            chat = dataBot.ticketsChannel;
+        }
+
+        if (status_direction === 'international') {
+            chat = dataBot.ticketsInternational;
+        }
 
         if (status_hook === 'ticketComment') {
             await updateDiaulogueStatus(chatId, '');
