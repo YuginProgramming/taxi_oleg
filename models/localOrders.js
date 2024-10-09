@@ -17,6 +17,10 @@ LocalOrders.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    direction_location: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     driver: {
         type: DataTypes.INTEGER,
         allowNull: true
