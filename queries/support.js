@@ -10,37 +10,11 @@ const support = async () => {
         const chatId = query.message.chat.id;
 
         if (action === 'support') {
-            await updateDiaulogueStatus(chatId, 'support');
-            await bot.sendMessage(chatId, 'Ви звернулися до служби підтримки. Чекайте на відповідь.');
+            await bot.sendMessage(chatId, 'Вас вітає підтримка УкрВояж, щоб перейти до розмови натисніть на логін: @UkrVoyaj_support');
             
-            await bot.sendMessage(supportChatId, `Новий запит до підтримки від користувача ${chatId}.`);
         }
     });
-
-    bot.on('message', async (message) => {
-        const chatId = message.chat.id;
-        const text = message.text;
-
-        const user = await findUserByChatId(chatId);
-        const status = user.dialogue_status;
-
-        if (status === 'support' && chatId !== supportChatId) {
-            await bot.sendMessage(supportChatId, `Повідомлення від користувача ${chatId}: ${text}`);
-        } else if (chatId === supportChatId && message.reply_to_message) {
-            // Відповідь оператора на запит користувача (через reply)
-            const originalMessage = message.reply_to_message.text;
-            const targetChatId = extractChatIdFromMessage(originalMessage); 
-
-            // Пересилаємо відповідь оператору до користувача
-            await bot.sendMessage(targetChatId, `${text}`);
-        }
-    });
-};
-
-const extractChatIdFromMessage = (message) => {
-    const match = message.match(/від користувача (\d+)/);
-    return match ? match[1] : null;
-};
+}
 
 export default support;
 
