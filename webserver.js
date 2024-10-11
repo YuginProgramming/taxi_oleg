@@ -94,8 +94,9 @@ const server = () => {
                     try {
                         const localOrder = await findLocalOrderById(ride_id);
 
-                        const getTag = localOrder?.pickup_location ? localOrder?.pickup_location(" ") : null;
-                        const putTag = localOrder?.direction_location ? localOrder?.direction_location(" ") : null;
+
+                        const getTag = localOrder?.pickup_location ? localOrder?.pickup_location.split(" ") : null;
+                        const putTag = localOrder?.direction_location ? localOrder?.direction_location.split(" ") : null;
 
                         if (getTag.length === 2) {
                             await bot.sendLocation(dataBot.driversChannel, getTag[0], getTag[1]);
