@@ -174,7 +174,7 @@ const localTrip = async () => {
 
         if (user && status_hook === 'direction') {
 
-            const order = await updateDirectionLocalOrderById(chatId, location.latitude + ' ' + location.longitude);
+            const order = await updateDirectionLocalOrderById(status_info, location.latitude + ' ' + location.longitude);
 
             const paymentLink = await sessionCreate(1, 'local', status_info, chatId);
 
@@ -185,38 +185,29 @@ const localTrip = async () => {
                         [{ text: 'Замовити', url: paymentLink }],
                         [{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }    
             );
+        } else {
+            await updateDiaulogueStatus(chatId, '');
+
+
+            const order = await createNewLocalOrder(chatId, location.latitude + ' ' + location.longitude, user.favorite_city);
+    
+            await bot.sendMessage(chatId, 
+                phrases.taxiOnTheWay,
+                { reply_markup: { inline_keyboard: [
+                    [{ text: 'Вказати напрямок руху', callback_data: `direction+${order.id}` }],
+                    [{ text: 'Залишити напрямок руху довільним', callback_data: `anydirection+${order.id}` }],
+                    [{ text: 'Вихід 🚪', callback_data: 'exit' }],
+                    [{ text: 'Залишити коментар 💬', callback_data: `localComment+${order.id}` }],
+                    
+                ]} }
+            )
         }
 
         
 
-        await updateDiaulogueStatus(chatId, '');
+       
 
-
-        const order = await createNewLocalOrder(chatId, location.latitude + ' ' + location.longitude, user.favorite_city);
-
-        await bot.sendMessage(chatId, 
-            phrases.taxiOnTheWay,
-            { reply_markup: { inline_keyboard: [
-                [{ text: 'Вказати напрямок руху', callback_data: `direction+${order.id}` }],
-                [{ text: 'Залишити напрямок руху довільним', callback_data: `anydirection+${order.id}` }],
-                [{ text: 'Вихід 🚪', callback_data: 'exit' }],
-                [{ text: 'Залишити коментар 💬', callback_data: `localComment+${order.id}` }],
-                
-            ]} }
-        )
-
-      /*  try {
-            const city = await findCityById(user.favorite_city)
-
-            await bot.sendLocation(dataBot.driversChannel, location.latitude, location.longitude);
-            await bot.sendMessage(dataBot.driversChannel, `Замовлення №: ${order.id+ ' ' +city.emoji+ ' ' + city.city + ' 📞' + user.phone}`);
-
-            
-        } catch (error) {
-            console.log(error)
-        }
-
-        */
+      
     })
 
     bot.on('message', async (message) => {

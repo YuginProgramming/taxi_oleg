@@ -94,11 +94,21 @@ const server = () => {
                     try {
                         const localOrder = await findLocalOrderById(ride_id);
 
-                        await bot.sendMessage(dataBot.driversChannel, 'Посадка: ' + localOrder.pickup_location);
-                        if (localOrder?.direction_location) {
-                            await bot.sendMessage(dataBot.driversChannel, 'Напрямок: '+localOrder.direction_location);
+                        const getTag = localOrder?.pickup_location ? localOrder?.pickup_location(" ") : null;
+                        const putTag = localOrder?.direction_location ? localOrder?.direction_location(" ") : null;
+
+                        if (getTag.length === 2) {
+                            await bot.sendLocation(dataBot.driversChannel, getTag[0], getTag[1]);
+                        } else {
+                            await bot.sendMessage(dataBot.driversChannel, 'Посадка: ' + localOrder.pickup_location);
                         }
 
+                        if (putTag.length === 2) {
+                            await bot.sendLocation(dataBot.driversChannel, putTag[0], putTag[1]);
+                        } else {
+                            await bot.sendMessage(dataBot.driversChannel, 'Напрямок: '+localOrder.direction_location);
+                        }
+                        
                         const city = await findCityById(localOrder?.city);
 
                         const user = await findUserByChatId(chat_id);
