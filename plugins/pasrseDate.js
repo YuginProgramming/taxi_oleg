@@ -6,13 +6,13 @@ const parseDateString = (dateString) => {
 
 
     if (regex.test(dateString)) {
-        const dateParts = dateString.split('.').map(Number);
+        const dateParts = dateString.split('.');
 
         return [dateParts[0], dateParts[1], dateParts[2]];
     } 
 
-    if (timeRegex.test(inputString)) {
-        const dateParts = dateString.split('.').map(Number);
+    if (timeRegex.test(dateString)) {
+        const dateParts = dateString.split('.');
 
         return [dateParts[0], dateParts[1], dateParts[2], dateParts[3]];
     }

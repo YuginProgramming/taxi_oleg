@@ -17,40 +17,48 @@ const getRideByDate = () => {
 
         const rideData = status.split("+");
 
-        const date = parseDateString(text);
+        console.log(rideData)
 
-        if (date.lenght === 3) {
+        if (rideData[0] === 'route') {
+            const date = parseDateString(text);
 
-            const rides = await findAllTodayRouteRides(rideData[1], date[0], date[1], date[2]);
+            console.log(date)
 
-            const ridesMenu = await generateRidesMenu(rides, 'buyTicket', chatId);
-
-            if (!ridesMenu) return;
-                            
-            
-
-            await bot.sendMessage(
-                chatId, 
-                phrases.ride,
-                { reply_markup: { inline_keyboard: ridesMenu } }
-            );
-
-        } if (date.lenght === 4) {
-            const rides = await findAllTodayRouteRidesinTime(rideData[1], date[0], date[1], date[2], date[3]);
-
-            const ridesMenu = await generateRidesMenu(rides, 'buyTicket', chatId);
-
-            if (!ridesMenu) return;
-                            
-            
-
-            await bot.sendMessage(
-                chatId, 
-                phrases.ride,
-                { reply_markup: { inline_keyboard: ridesMenu } }
-            );
-
+            if (date && date.length === 3) {
+    
+                const rides = await findAllTodayRouteRides(rideData[1], date[0], date[1], date[2]);
+    
+                const ridesMenu = await generateRidesMenu(rides, 'buyTicket', chatId);
+    
+                if (!ridesMenu) return;
+                                
+                
+    
+                await bot.sendMessage(
+                    chatId, 
+                    phrases.ride,
+                    { reply_markup: { inline_keyboard: ridesMenu } }
+                );
+    
+            } if (date && date.length === 4) {
+                const rides = await findAllTodayRouteRidesinTime(rideData[1], date[1], date[2], date[3], date[0]);
+    
+                const ridesMenu = await generateRidesMenu(rides, 'buyTicket', chatId);
+    
+                if (!ridesMenu) return;
+                                
+                
+    
+                await bot.sendMessage(
+                    chatId, 
+                    phrases.ride,
+                    { reply_markup: { inline_keyboard: ridesMenu } }
+                );
+    
+            }
+    
         }
+
     })
 }
 
