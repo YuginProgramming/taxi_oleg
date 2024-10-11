@@ -19,7 +19,7 @@ LocalOrders.init({
     },
     direction_location: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     driver: {
         type: DataTypes.INTEGER,
@@ -65,10 +65,16 @@ const updateCommentLocalOrderById = async (id, comment) => {
     return res[0] ? id : undefined;
 };
 
+const updateDirectionLocalOrderById = async (id, direction) => {
+    const res = await LocalOrders.update({ direction_location: direction }, { where: { id } });
+    return res[0] ? id : undefined;
+};
+
 export {
     LocalOrders,
     createNewLocalOrder,
     findLocalOrderById,
     updateDriverLocalOrderById,
-    updateCommentLocalOrderById
+    updateCommentLocalOrderById,
+    updateDirectionLocalOrderById
 };

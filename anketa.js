@@ -19,7 +19,7 @@ export const anketaListiner = async () => {
 
         const user = await findUserByChatId(chatId);
 
-        const status = user.dialogue_status;
+        const status = user?.dialogue_status;
 
         try {
             if (text === '/start') {                

@@ -11,6 +11,9 @@ import { buildRouteDescriptions, findRouteById, isDomesticRoute } from "./models
 import generateTicketPDF from "./plugins/generate-ticket.js";
 import { createReadStream } from "fs";
 import formatNumber from "./plugins/formatNumber.js";
+import { findLocalOrderById } from "./models/localOrders.js";
+import { findCityById } from "./models/taxi-cities.js";
+import { phrases } from "./language_ua.js";
 
 
 const server = () => {
@@ -73,6 +76,62 @@ const server = () => {
                     );
 
                     await bot.sendMessage(dataBot.driversChannel, `Оплачено ${data.amount}`);
+
+                    const answer = {
+                        orderReference: data.orderReference,
+                        status: 'accept',
+                        time: Date.now(),
+                        signature: '',
+                    };
+                    const forHashString = [answer.orderReference, answer.status, answer.time].join(';');
+                    const hash = crypto.createHmac('md5', dataBot.merchant_sercret).update(forHashString).digest('hex');
+                    answer.signature = hash;
+        
+                    res.status(200).send(answer);
+
+                } if (seat === 'local') {
+
+                    try {
+                        const localOrder = await findLocalOrderById(ride_id);
+
+                        await bot.sendMessage(dataBot.driversChannel, 'Посадка: ' + localOrder.pickup_location);
+                        if (localOrder?.direction_location) {
+                            await bot.sendMessage(dataBot.driversChannel, 'Напрямок: '+localOrder.direction_location);
+                        }
+
+                        const city = await findCityById(localOrder?.city);
+
+                        const user = await findUserByChatId(chat_id);
+                        
+                        await bot.sendMessage(dataBot.driversChannel, `Замовлення №: ${localOrder.id+ ' ' +city.emoji+ ' ' + city.city + ' 📞' + user.phone}`);
+
+                        await bot.sendMessage(chat_id, 
+                            phrases.successPay,
+                            { reply_markup: { inline_keyboard: [
+                                [{ text: 'Вихід 🚪', callback_data: 'exit' }],
+                                [{ text: 'Залишити коментар 💬', callback_data: `localComment+${localOrder.id}` }],                                
+                                ]}
+                            }
+                        )
+
+            
+                    } catch (error) {
+                        console.log(error)
+                    }
+
+        
+
+                    const answer = {
+                        orderReference: data.orderReference,
+                        status: 'accept',
+                        time: Date.now(),
+                        signature: '',
+                    };
+                    const forHashString = [answer.orderReference, answer.status, answer.time].join(';');
+                    const hash = crypto.createHmac('md5', dataBot.merchant_sercret).update(forHashString).digest('hex');
+                    answer.signature = hash;
+        
+                    res.status(200).send(answer);
 
                 } else {
                     const user = await findUserByChatId(chat_id);
