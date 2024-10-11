@@ -129,6 +129,8 @@ const buyTicket = async () => {
                                 phrases.ride,
                                 { reply_markup: { inline_keyboard: ridesMenu } }
                             );
+
+                            
                         break;
 
                         case 'ride': 
@@ -259,6 +261,7 @@ const buyTicket = async () => {
                 { reply_markup: { inline_keyboard: [[{ text: 'Вихід 🚪', callback_data: 'exit' }]] } }
             )
         }
+        
     })
 
 }
