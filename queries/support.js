@@ -11,7 +11,8 @@ const support = async () => {
 
         if (action === 'support') {
             await bot.sendMessage(chatId, 'Вас вітає підтримка УкрВояж, щоб перейти до розмови натисніть на логін: @UkrVoyaj_support');
-            
+        } else if (action === 'inquiry') {
+            await bot.sendMessage(chatId, 'Для ознайомлення з детальною інформацією будьласка перейдіть за посиланням: https://telegra.ph/UkrVoyazh-10-17');
         }
     });
 }
