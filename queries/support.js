@@ -10,7 +10,7 @@ const support = async () => {
         const chatId = query.message.chat.id;
 
         if (action === 'support') {
-            await bot.sendMessage(chatId, 'Вас вітає підтримка УкрВояж, щоб перейти до розмови натисніть на логін: @UkrVoyaj_support');
+            await bot.sendMessage(chatId, 'Вас вітає підтримка УкрВояж, щоб перейти до розмови натисніть на логін: @UkrVoyazh_support');
         } else if (action === 'inquiry') {
             await bot.sendMessage(chatId, 'Для ознайомлення з детальною інформацією будьласка перейдіть за посиланням: https://telegra.ph/UkrVoyazh-10-17');
         }
